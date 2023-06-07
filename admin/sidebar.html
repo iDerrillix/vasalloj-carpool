@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-inner">
+            <header class="sidebar-header">
+                <button type="button" class="sidebar-burger" onclick="toggleSidebar()">
+                    <i class='bx bx-menu'></i>
+                </button>
+                <h3 class="sidebar-logo">Carpool</h3>
+            </header>
+
+            <nav class="sidebar-menu">
+                <button type="button" class="has-border" onclick="window.location.href='admin.php';">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </button>
+                <button type="button" onclick="window.location.href='approve-cars.php';">
+                    <i class="fa-sharp fa-solid fa-car-side"></i>
+                    <span>Approve Cars</span>
+                </button>
+                <button type="button" class="has-border" onclick="window.location.href='approve-transactions.php';">
+                    <i class="fa-solid fa-money-bills"></i>
+                    <span>Transactions</span>
+                </button>
+                <button type="button" class="has-border" onclick="window.location.href='reports.php';">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Reports</span>
+                </button>
+                <button type="button" onclick="window.location.href='../login.php';">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </nav>
+        </div>
+    </nav>
+
+
+    <script type="text/javascript">
+        const toggleSidebar = () => document.body.classList.toggle("open");
+    </script>
+
+</body>
+</html>

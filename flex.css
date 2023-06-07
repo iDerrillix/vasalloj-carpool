@@ -1,0 +1,19 @@
+.flex{
+    display: flex;
+    gap: 15px;
+}
+.col{
+    flex-direction: column;
+}
+.row{
+    flex-direction: row;
+}
+.main-center{
+    justify-content: center;
+}
+.main-left{
+    justify-content: flex-start;
+}
+.box{
+    display: inline-block;
+}
