@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style></style>
     <link rel="stylesheet" href="utilities.css">
     <link rel="stylesheet" href="flex.css">
     <link rel="stylesheet" href="style.css">
@@ -22,25 +23,27 @@
         $result = mysqli_query($con, $query);
         $row = mysqli_fetch_assoc($result);
     ?>
-    <div class="container" style="width: 50%; margin-top: 20px; margin: 20px auto; text-align: left;">
+    <div class="container" style="width: 50%; margin: 0 auto; margin-top: 100px; text-align: left;">
         <?php 
             if(isset($_GET['status']) && $_GET['status'] == 'success'){
                 echo "<p style='color:green;'>Successfully Updated</p>";
             }
         ?>
-        <h3>Update Information</h3>
+        <div class="heading">
+            <p class="main-text">UPDATE INFORMATION</p>
+        </div>
+        
         <form action="./script/update.php" method="POST">
             <div class="flex">
-                <div class="box" style="width: 50%;">
+                <div class="text-div" style="width: 50%;">
                     <p>Personal Information</p>
-                    <input type="text" name="uFName" id="" required placeholder="First Name" class="text-box" value="<?php echo $row['fname'];?>" readonly>
-                    <input type="text" name="uMName" id="" required placeholder="Middle Name" class="text-box" value="<?php echo $row['mname'];?>" readonly>
-                    <input type="text" name="uLName" id="" required placeholder="Last Name" class="text-box" value="<?php echo $row['lname'];?>" readonly>
+                    <p></p>
+                    <input type="text" name="uFName" id="" required placeholder="First Name" class="text-box" value="<?php echo $row['fname']." ".$row['mname']." ".$row['lname'];?>" readonly>
                     <input type="email" name="uEmail" id="" readonly placeholder="Email Address" class="text-box" value="<?php echo $row['uEmail'];?>">
                     <input type="tel" name="uPhone" id="" required placeholder="Phone Number" class="text-box" value="<?php echo $row['uPhone'];?>">
                     <input placeholder="Birthday" class="text-box" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" name="bday" value="<?php echo $row['birthday'];?>" required readonly/>
                 </div>
-                <div class="box" style="width: 50%;">
+                <div class="text-div" style="width: 50%;">
                     <p>Address</p>
                     <input type="text" name="street" id="" required placeholder="Street" class="text-box" value="<?php echo $row['street'];?>">
                     <input type="text" name="brgy" id="" required placeholder="Barangay" class="text-box" value="<?php echo $row['brgy'];?>">
@@ -49,9 +52,13 @@
                     
                 </div>
             </div>
+            <br>
             <div>
-                <p>Account Information</p>
-                <div class="flex col main-left">
+                <div class="heading">
+                    <p class="main-text">ACCOUNT INFORMATION</p>
+                </div>
+                
+                <div class="flex col main-left text-div">
                     <?php 
                         if($row['uType'] == 'Driver'){
                             echo "Driver License No:";
@@ -94,11 +101,8 @@
                             <p><i class='fa-solid fa-location-pin' style='color: #ff710d;'></i> ".$row['start_location']."</p>
                             <p><i class='fa-solid fa-location-dot' style='color: #ff710d;'></i> ".$row['end_location']."</p>
                         </div>
-                        <div>
-                            
-                        </div>
                         <div style='text-align: right;'>
-                            <p>₱".$row['price']."</p>
+                            <p> - <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
                             <p>Not yet rated</p>
                         </div>
                     </div>
@@ -124,11 +128,8 @@
                             <p><i class='fa-solid fa-location-pin' style='color: #ff710d;'></i> ".$row['start_location']."</p>
                             <p><i class='fa-solid fa-location-dot' style='color: #ff710d;'></i> ".$row['end_location']."</p>
                         </div>
-                        <div>
-                            
-                        </div>
                         <div style='text-align: right;'>
-                            <p>₱".$row['price']."</p>
+                            <p>- <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
                             <p>".$stars_string."</p>
                         </div>
                     </div>

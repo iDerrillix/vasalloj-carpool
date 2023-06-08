@@ -119,7 +119,7 @@
                         while($rowers = mysqli_fetch_assoc($result)){
                             echo "<div>
                             <input type='radio' name='seat_id' id='seat-".$rowers['idRates']."' value='".$rowers['idRates']."' checked>
-                            <label for='seat-".$rowers['idRates']."'> ".$rowers['seat_position']." ₱".$rowers['price']."</label>
+                            <label for='seat-".$rowers['idRates']."'><i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$rowers['price']."-".$rowers['seat_position']."</label>
                         </div>";
                         }
                     ?>

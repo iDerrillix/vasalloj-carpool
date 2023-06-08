@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 *{
     font-family: 'Poppins', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
 }
 body {
     margin: 0px;
-    background-color: #f7f9fd;
+    background-color: #EBF1F4;
     
 }
 .container{
@@ -14,7 +14,7 @@ body {
     min-width: 35%;
     max-width: 75%;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 3px;
     text-align: center;
     box-shadow: 0 0.6em 1.2em rgba(28, 0, 80, 0.06);
 }
@@ -30,11 +30,9 @@ body {
 .button{
     border-radius: 30px;
     background-color: #ff710d;
-    padding: 0.6em 0.3em;
+    padding: 0.6em 1.2em;
     border: none;
     margin-top: 20px;
-    padding: 1px 50px;
-    height: 55px;
     cursor: pointer;
     color: #fff;
     font-size: 16px;

@@ -12,6 +12,10 @@ header{
     color: white;
     box-shadow: 0 0.6em 1.2em rgba(28, 0, 80, 0.06);
     height: 75px;
+    border-bottom: 5px solid #fff;
+    margin-bottom: -5px;
+    position: fixed;
+    width: 100%;
 }
 header ul li a{
     text-decoration: none;

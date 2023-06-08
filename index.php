@@ -30,6 +30,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
 </head>
 <body>
     <?php
@@ -38,7 +39,9 @@
         
     ?>
     <!-- Available Trips Container -->
-    <div style="margin: auto; margin-top: 20px; max-width: 75%;" class="flex flex-main-center flex-cross-center">
+    
+    <div style="margin: auto; margin-top: 80px; max-width: 75%; padding: 10px;" class="flex flex-main-center flex-cross-center">
+        
         <div class="flex flex-wrap flex-main-center flex-gap-20" style="width: 90%;">
         <?php 
             $uID = $_SESSION['uID'];
@@ -48,12 +51,42 @@
                 $row = mysqli_fetch_assoc($result);
                 if($row['user_status'] == 'Available'){
                     mysqli_free_result($result);
-                    $query = "SELECT trip.idTrip, trip.start_location, trip.end_location, trip.departure_date, trip.seats_avail, users.fname, users.lname, car.car_make, car.model, trip.status FROM trip JOIN users ON users.uID = trip.Users_idUsers JOIN car ON trip.Car_idCar = car.idCar WHERE trip.status='Scheduled' AND trip.departure_date > CURRENT_TIMESTAMP";
+                    $query = "SELECT
+                    trip.idTrip,
+                    trip.start_location,
+                    trip.end_location,
+                    trip.departure_date,
+                    trip.seats_avail,
+                    users.fname,
+                    users.lname,
+                    car.car_make,
+                    car.model,
+                    trip.status,
+                    MIN(rates.price) AS 'price'
+                  FROM
+                    trip
+                    JOIN users ON users.uID = trip.Users_idUsers
+                    JOIN car ON trip.Car_idCar = car.idCar
+                    JOIN rates ON rates.Trip_idTrip = trip.idTrip
+                  WHERE
+                    trip.status = 'Scheduled'
+                    AND trip.departure_date > CURRENT_TIMESTAMP
+                  GROUP BY
+                    trip.idTrip, 
+                    trip.start_location, 
+                    trip.end_location, 
+                    trip.departure_date, 
+                    trip.seats_avail, 
+                    users.fname, 
+                    users.lname, 
+                    car.car_make, 
+                    car.model, 
+                    trip.status;";
                     $result = mysqli_query($con, $query);
                     while($row = mysqli_fetch_assoc($result)){
                         echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
-                        <div class='container' style='min-width: 350px; margin: 0; max-width: fit-content;'>
-                        <div class='flex flex-main-spacearound' style='width: 100%;'>
+                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
+                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
                             <div style='text-align: left;'>
                                 <h3>".$row['fname']." ".$row['lname']."</h3>
                                 <p>".$row['car_make']." ".$row['model']."</p>
@@ -61,7 +94,43 @@
                                 <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
                             </div>
                             <div style='text-align: right;'>
-                                <p>Starts at ₱400</p>
+                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
+                                <p>".date("D d M", strtotime($row['departure_date']))."</p>
+                                <p>".date("g:i A", strtotime($row['departure_date']))."</p>
+                                <p>".$row['seats_avail']." seats left</p>
+                            </div>
+                        </div>
+                    </div>
+                    </a>";
+                    echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
+                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
+                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
+                            <div style='text-align: left;'>
+                                <h3>".$row['fname']." ".$row['lname']."</h3>
+                                <p>".$row['car_make']." ".$row['model']."</p>
+                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
+                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
+                            </div>
+                            <div style='text-align: right;'>
+                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
+                                <p>".date("D d M", strtotime($row['departure_date']))."</p>
+                                <p>".date("g:i A", strtotime($row['departure_date']))."</p>
+                                <p>".$row['seats_avail']." seats left</p>
+                            </div>
+                        </div>
+                    </div>
+                    </a>";
+                    echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
+                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
+                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
+                            <div style='text-align: left;'>
+                                <h3>".$row['fname']." ".$row['lname']."</h3>
+                                <p>".$row['car_make']." ".$row['model']."</p>
+                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
+                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
+                            </div>
+                            <div style='text-align: right;'>
+                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
                                 <p>".date("D d M", strtotime($row['departure_date']))."</p>
                                 <p>".date("g:i A", strtotime($row['departure_date']))."</p>
                                 <p>".$row['seats_avail']." seats left</p>
@@ -314,7 +383,18 @@
                 <script src="fetch_bookings.js"></script>
                 <script>
                     $(document).ready(function() {
+                        document.querySelector("#live_search").addEventListener("click", function(e){
+                            console.log("test");
+                            var input = $(this).val();
+                            alert(input);
+                        });
                         fetchBookings(<?php echo $trip_id;?>);
+                        $("#live_search").keyup(function(){
+                            console.log("test");
+                            var input = $(this).val();
+                            alert(input);
+                        });
+                        
                     });
                 </script>
                     <!-- <p>Booking</p>
@@ -358,7 +438,6 @@
             ?>
         </div>
     </div>
-    
     
 </body>
 </html>
