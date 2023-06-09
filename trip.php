@@ -14,7 +14,7 @@
         include 'header.php';
         
     ?>
-    <div style="width: 50%; margin: auto;">
+    <div style="width: 50%; margin: 100px auto;">
     <form action="trip.php" method="GET">
         <div class="container">
             
@@ -104,8 +104,9 @@
         
         <div class="flex flex-main-spacebetween flex-col">
             <div style="text-align: center;">
-                <h1>Trip Details</h1>
-                <p><?php echo date("D d M g:i A", strtotime($row['departure_date'])); ?></p>
+                <p class="heading second-text"><b>TRIP DETAILS</b></p>
+                <br>
+                <p class="main-text"><?php echo date("D d M g:i A", strtotime($row['departure_date'])); ?></p>
                 <div>
                         <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i> <p style="display: inline;"><?php echo $row['start_location']; ?></p><br>
                         <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i> <p style="display: inline;"><?php echo $row['end_location']; ?></p>
@@ -129,13 +130,22 @@
             <div style="text-align: center;">
                 <div class="flex flex-main-spacebetween">
                     <div style="text-align: left;">
-                        <label for=""><?php echo $row['fname'].' '.$row['mname'].' '.$row['lname']; ?></label><br>
-                        <label for=""><?php echo $row['uPhone']; ?></label><br>
-                        <label for=""><?php echo $row['uEmail']; ?></label>
+                        <div class='flex flex-cross-start flex-gap-10'>
+                            <div>
+                                <img src='./img/yuka-makoto2.jpg' alt='' style='width: 45px; border-radius: 45px;'>
+                            </div>
+                            <div>
+                                <p class="main-text"><?php echo $row['fname'].' '.$row['mname'].' '.$row['lname']; ?></p>
+                                <p><?php echo $row['uPhone']; ?></p>
+                                <p><?php echo $row['uEmail']; ?></p>
+                                <a href='profile.php' class="input-btn" style="margin-top: 2px; padding: 0.6em 1.8em; display: inline-block;">View Profile</a>
+                                
+                            </div>
+                        </div>
                     </div>
                     <div style="text-align: right;">
-                        <label for=""><?php echo $row['plate_no']; ?></label>
-                        <label for=""><?php echo $row['car_make']; ?> <?php echo $row['model']; ?></label>
+                        <p><?php echo $row['car_make']; ?> <?php echo $row['model']; ?></p>
+                        <p><?php echo $row['plate_no']; ?></p>
                         <input type="hidden" name="trip_id" value="<?php echo $id; ?>">
                     </div>
                 </div>
@@ -147,14 +157,21 @@
                     $result = mysqli_query($con, $query);
                     $row = mysqli_fetch_assoc($result);
                     $status = $row['status'];
+                    $query = "SELECT trip_passengers.Users_idUsers FROM trip_passengers WHERE Trip_idTrip=$trip_id;";
+                    $result = mysqli_query($con, $query);
+                    if(mysqli_num_rows($result) > 0){
+                        $booked = true;
+                    } else{
+                        $booked = false;
+                    }
                     $query = "SELECT `users`.`user_status` FROM users WHERE uID=$uID;";
                     $result3 = mysqli_query($con, $query);
                     $row = mysqli_fetch_row($result3);
-                    if($trip_id == $_GET['id'] && $row[0] == 'Pending Booking'){
+                    if($trip_id == $_GET['id'] && $row[0] == 'Pending Booking' && $booked){
                         echo "<input type='submit' name='cancel' value='Cancel Booking' class='button' style='padding: 0.6em 1.2em;'/>";
                     } else if($trip_id == $_GET['id'] && $row[0] == 'Booked'){
                         echo "<p>Already Booked</p>";
-                    } else if($trip_id == $_GET['id'] && $status == 'Completed'){
+                    } else if($trip_id == $_GET['id'] && $status == 'Completed' && !$booked){
                     }else{
                         echo "<input type='submit' name='book' value='Book Now' class='button' style='padding: 0.6em 1.2em;'/>";
                     }

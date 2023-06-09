@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="utilities.css">
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +18,8 @@
         include 'header.php';
         
     ?>
-    <div class="container">
+    <div>a</div>
+    <div class="container" style="width: 50%; margin: 0 auto; margin-top: 100px;">
         <form action="./script/car-register.php" method="POST" id="form">
             <?php 
                 
@@ -31,7 +33,8 @@
                 $row = mysqli_fetch_assoc($result);
             ?>
             <div id="license" style="text-align: center;">
-                <h4>Enter Your License Number</h4>
+                <p class="heading second-text"><b>Enter Your License Number</b></p>
+                <br>
                 <input type="text" name="lic_no" id="lic_no" placeholder="License No." value="<?php echo $row['lic_no'];?>" required="true" class="text-box" pattern="[A-Z][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]" title="11 Digit License No. [A00-00-000000]">
                 <input type="button" value="Next" id="license-next" class="button" onclick="hideLayer(1);"> 
             </div>
@@ -55,20 +58,10 @@
                 <input type="submit" value="Done" class="button"  name="submit">
             </div>
         </form>
-        <div id="cars">
-        <h4>Registered Cars</h4>
-        <table width="100%">
-            <thead>
-                <tr>
-                    <th>Plate No.</th>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th>Approved</th>
-                </tr>
-            </thead>
-            <tbody>
+    </div>
+    <div id="cars" class="container" style="width: 50%; margin: 0 auto; margin-top: 20px;">
+        <p class="heading second-text"><b>Registered Cars</b></p>
+        <table class="simple-table" style="width: 100%;">
                 <?php
                     $query = "SELECT * FROM car WHERE Users_idUsers='$id'";
                     $result = mysqli_query($con, $query);
@@ -79,6 +72,7 @@
                             $approve = "Yes";
                         }
                         echo "<tr>
+                        <td>".$row['idCar']."</td>
                         <td>".$row['plate_no']."</td>
                         <td>".$row['car_make']."</td>
                         <td>".$row['model']."</td>
@@ -88,10 +82,8 @@
                         </tr>";
                     }
                 ?>
-            </tbody>
         </table>
         </div>
-    </div>
     
     <script>
         

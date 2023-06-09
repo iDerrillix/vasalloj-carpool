@@ -49,7 +49,7 @@
             $result = mysqli_query($con, $query);
             if(mysqli_num_rows($result) > 0){
                 $row = mysqli_fetch_assoc($result);
-                if($row['user_status'] == 'Available'){
+                if($row['user_status'] == 'Available' || $row['user_status'] == 'Pending Booking'){
                     mysqli_free_result($result);
                     $query = "SELECT
                     trip.idTrip,
@@ -84,50 +84,22 @@
                     trip.status;";
                     $result = mysqli_query($con, $query);
                     while($row = mysqli_fetch_assoc($result)){
-                        echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
-                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
-                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
-                            <div style='text-align: left;'>
-                                <h3>".$row['fname']." ".$row['lname']."</h3>
-                                <p>".$row['car_make']." ".$row['model']."</p>
-                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
-                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
-                            </div>
-                            <div style='text-align: right;'>
-                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
-                                <p>".date("D d M", strtotime($row['departure_date']))."</p>
-                                <p>".date("g:i A", strtotime($row['departure_date']))."</p>
-                                <p>".$row['seats_avail']." seats left</p>
-                            </div>
-                        </div>
-                    </div>
-                    </a>";
                     echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
                         <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
                         <div class='flex flex-main-spacebetween' style='width: 100%;'>
                             <div style='text-align: left;'>
-                                <h3>".$row['fname']." ".$row['lname']."</h3>
-                                <p>".$row['car_make']." ".$row['model']."</p>
-                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
-                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
-                            </div>
-                            <div style='text-align: right;'>
-                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
-                                <p>".date("D d M", strtotime($row['departure_date']))."</p>
-                                <p>".date("g:i A", strtotime($row['departure_date']))."</p>
-                                <p>".$row['seats_avail']." seats left</p>
-                            </div>
-                        </div>
-                    </div>
-                    </a>";
-                    echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
-                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
-                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
-                            <div style='text-align: left;'>
-                                <h3>".$row['fname']." ".$row['lname']."</h3>
-                                <p>".$row['car_make']." ".$row['model']."</p>
-                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
-                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
+                                <div class='flex flex-cross-start flex-gap-10'>
+                                    <div>
+                                        <img src='./img/yuka-makoto2.jpg' alt='' style='width: 45px; border-radius: 45px;'>
+                                    </div>
+                                    <div>
+                                        <h3>".$row['fname']." ".$row['lname']."</h3>
+                                        <p>".$row['car_make']." ".$row['model']."</p>
+                                        <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
+                                        <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div style='text-align: right;'>
                                 <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
@@ -256,7 +228,7 @@
         </div>
     </div>
     <!-- Driver Register Route Container -->
-    <div class="container" id="register-route" style="display: none; width: 50%;">
+    <div class="container" id="register-route" style="display: none; width: 50%; text-align: left;">
         <div class="register-route" >
             <?php 
                 if(isset($_GET['success'])){
@@ -276,11 +248,11 @@
                 echo "<script>document.querySelector('#register-route').style.display = 'block';</script>";
             ?>
             <form action="register-route.php" method="POST">
-                <p>Route Details</p>
+                <p><b>ROUTE DETAILS</b></p>
                 <input type="text" name="start_loc" id="" placeholder="Start Location" class="text-box" required>
                 <input type="text" name="end_loc" id="" placeholder="End Location" class="text-box" required>
                 <input placeholder="Departure Time and Date" class="text-box" type="text" onfocus="(this.type='datetime-local')" id="date" name="departure_date" required/>
-                <P>Select Car</P>
+                <hr>
                     <select name="idCar" id="" class="text-box" required>
                         <?php 
                             $id = $_SESSION['uID'];
@@ -291,8 +263,10 @@
                             }
                         ?>
                     </select>
-                <p>Pricing</p>
-                <div class="flex main-center">
+                    <hr>
+                <p><b>PRICING</b></p>
+                <br>
+                <div class="flex flex-main-spacebetween">
                     <div>
                         <th>Front Seat</th>
                         <input type="number" name="front_seat" id="" placeholder="Enter Price" class="text-box" required>
@@ -383,18 +357,7 @@
                 <script src="fetch_bookings.js"></script>
                 <script>
                     $(document).ready(function() {
-                        document.querySelector("#live_search").addEventListener("click", function(e){
-                            console.log("test");
-                            var input = $(this).val();
-                            alert(input);
-                        });
                         fetchBookings(<?php echo $trip_id;?>);
-                        $("#live_search").keyup(function(){
-                            console.log("test");
-                            var input = $(this).val();
-                            alert(input);
-                        });
-                        
                     });
                 </script>
                     <!-- <p>Booking</p>

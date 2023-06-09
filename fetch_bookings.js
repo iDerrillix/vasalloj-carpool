@@ -11,7 +11,7 @@ function fetchBookings(id){
         },
         success: function(response){
             var encoded_response = JSON.parse(response);
-            
+            console.log("fetching");
             if(encoded_response.length !== 0 && lastLength < encoded_response.length ){
                 console.log(encoded_response);
                 encoded_response.forEach(function(item) {
