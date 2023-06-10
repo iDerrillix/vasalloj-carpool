@@ -91,7 +91,7 @@
         <?php 
             if(isset($_GET['id'])){
                 $id = $_GET['id'];
-                $query = "SELECT trip.start_location, trip.end_location, trip.seats_avail, trip.departure_date, users.fname, users.mname, users.lname, users.uPhone, users.uEmail, car.plate_no, car.car_make, car.model FROM trip JOIN users ON trip.Users_idUsers = users.uID JOIN car ON trip.Car_idCar = car.idCar WHERE trip.idTrip=$id;";
+                $query = "SELECT trip.start_location, trip.end_location, trip.seats_avail, trip.departure_date, users.fname, users.mname, users.lname, users.prof_path, users.uPhone, users.uEmail, car.plate_no, car.car_make, car.model FROM trip JOIN users ON trip.Users_idUsers = users.uID JOIN car ON trip.Car_idCar = car.idCar WHERE trip.idTrip=$id;";
                 $result = mysqli_query($con, $query);
                 if(!$result){
                     header("Location: trip.php?id=$id&status=error");
@@ -132,7 +132,7 @@
                     <div style="text-align: left;">
                         <div class='flex flex-cross-start flex-gap-10'>
                             <div>
-                                <img src='./img/yuka-makoto2.jpg' alt='' style='width: 45px; border-radius: 45px;'>
+                                <img src="./img/<?php echo $row['prof_path'];?>" alt="" style="width: 60px; border-radius: 60px; object-fit: cover; height: 60px;">
                             </div>
                             <div>
                                 <p class="main-text"><?php echo $row['fname'].' '.$row['mname'].' '.$row['lname']; ?></p>

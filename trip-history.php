@@ -37,7 +37,7 @@
         $id = $_SESSION['uID'];
         $trip_id = $_GET['id'];
         if($_SESSION['uType'] == "Passenger"){
-            $query = "SELECT users.fname, users.lname, users.uPhone, users.uEmail, users.lic_no, trip.idTrip, trip.departure_date, trip.status, car.car_make, car.model, car.plate_no, trip.start_location, trip.end_location, rates.price AS 'price', rates.seat_position, 
+            $query = "SELECT users.fname, users.lname, users.uPhone, users.prof_path, users.uEmail, users.lic_no, trip.idTrip, trip.departure_date, trip.status, car.car_make, car.model, car.plate_no, trip.start_location, trip.end_location, rates.price AS 'price', rates.seat_position, 
             rating.rating_stars AS 'rating' FROM trip JOIN car ON trip.Car_idCar = car.idCar JOIN trip_passengers ON trip.idTrip = trip_passengers.Trip_idTrip JOIN rates ON rates.idRates = 
             trip_passengers.Rates_idRates LEFT JOIN rating ON trip.idTrip = rating.Trip_idTrip JOIN users ON trip.Users_idUsers = users.uID WHERE trip_passengers.Users_idUsers = $id AND trip.idTrip=$trip_id;";
             $result = mysqli_query($con, $query);
@@ -74,7 +74,7 @@
             <div>
                 <div class="flex flex-cross-start">
                     <div>
-                        <img src="./img/yuka-makoto2.jpg" alt="" style="width: 60px; border-radius: 60px;">
+                        <img src="./img/<?php echo $row['prof_path'];?>" alt="" style="width: 60px; border-radius: 60px; object-fit: cover; height: 60px;">
                     </div>
                     <div>
                         <h3><?php echo $row['fname']." ".$row['lname'];?></h3>
@@ -146,7 +146,7 @@
         <br>
         <div class="flex flex-col">
             <?php 
-                $query = "SELECT users.fname, users.lname, users.uPhone, rating.rating_stars FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = users.uID JOIN rating ON rating.Trip_idTrip = trip_passengers.Trip_idTrip WHERE trip_passengers.Trip_idTrip = $trip_id;";
+                $query = "SELECT users.fname, users.lname, users.uPhone, users.prof_path, rating.rating_stars FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = users.uID JOIN rating ON rating.Trip_idTrip = trip_passengers.Trip_idTrip WHERE trip_passengers.Trip_idTrip = $trip_id;";
                 $result = mysqli_query($con, $query);
                 while($row = mysqli_fetch_assoc($result)){
                     $stars_string = "";
@@ -164,7 +164,7 @@
                     echo "
                     <div class='flex flex-main-spacebetween'>
                         <div class='flex flex-main-spacebetween'>
-                            <img src='./img/yuka-makoto2.jpg' alt='' style='width: 45px; border-radius: 45px;'>
+                            <img src='./img/".$row['users.prof_path']."' alt='' style='width: 45px; border-radius: 45px; object-fit: cover; height: 45px;'>
                             <div>
                                 <p class='main-text'>".$row['fname']." ".$row['lname']."</p>
                                 <p>".$row['uPhone']."</p>

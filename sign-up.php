@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body{
             background-color: #252e42;
@@ -32,7 +33,7 @@
                 <hr>
                 <form action="./register.php" method="POST">
                     <div class="flex flex-main-spacebetween flex-gap-10">
-                        <div>
+                        <div style="width: 50%;">
                             
                             <p>Personal Information</p>
                             <input type="text" name="fname" id="" placeholder="First Name" required class="text-box">
@@ -41,7 +42,7 @@
                             <input type="tel" name="phone" id="" placeholder="Phone Number" required class="text-box">
                             <input placeholder="Birthday" class="text-box" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" name="bday" required max="<?php echo date("Y-m-d", strtotime("-18 year", time()));?>"/>
                         </div>
-                        <div>
+                        <div style="width: 50%;">
                             <p>Address</p>
                             <input type="text" name="street" id="" placeholder="Street" required class="text-box">
                             <input type="text" name="brgy" id="" placeholder="Barangay" required class="text-box">
@@ -52,7 +53,10 @@
                     <hr>
                     <input type="email" name="email" id="" placeholder="Email Address" required class="text-box">
                     <input type="password" name="pswd" id="" placeholder="Password" required class="text-box">
-                    <input type="submit" value="Create Account" name="submit" class="button" style="width: 100%;">
+                    <br>
+                    <input type="checkbox" name="" id="agree">
+                    <label for="agree" class="second-text">Creating an account means that you agree with our <a href="">Terms and Conditions</a></label>
+                    <input type="submit" value="Create Account" name="submit" class="button" style="width: 100%;" id="submit-btn">
                 </form>
             </div>
             <div id="left" class="flex flex-col flex-main-center flex-cross-center" style="width: 50%">
@@ -64,6 +68,18 @@
         </div>
     </div>
     
-    
+    <script>
+        $(document).ready(function(){
+            $("#submit-btn").prop('disabled', true);
+            $("#agree").click(function(){
+                if ($(this).is(':checked')) {
+                    $("#submit-btn").prop('disabled', false);
+                } else{
+                    $("#submit-btn").prop('disabled', true);
+                }
+                
+            });
+        });
+    </script>
 </body>
 </html>

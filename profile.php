@@ -33,11 +33,11 @@
             <p class="main-text">UPDATE INFORMATION</p>
         </div>
         
-        <form action="./script/update.php" method="POST">
+        <form action="./script/update.php" method="POST" enctype="multipart/form-data">
             <div class="flex">
                 <div>
                     <br>
-                    <img src="./img/yuka-makoto2.jpg" alt="" style="width: 60px; border-radius: 60px;">
+                    <img src="./img/<?php echo $row['prof_path'];?>" alt="" style="width: 60px; border-radius: 60px; object-fit: cover; height: 60px;">
                 </div>
                 <div class="text-div" style="width: 50%;">
                     <p>Personal Information</p>
@@ -47,7 +47,7 @@
                     <input type="tel" name="uPhone" id="" required placeholder="Phone Number" class="text-box" value="<?php echo $row['uPhone'];?>">
                     <input placeholder="Birthday" class="text-box" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" name="bday" value="<?php echo $row['birthday'];?>" required readonly/>
                     <p>Profile Picture</p>
-                    <input type="file" name="profile_path" id="" accept="image/png, image/gif, image/jpeg">
+                    <input type="file" name="file" id="" >
                 </div>
                 <div class="text-div" style="width: 50%;">
                     <p>Address</p>

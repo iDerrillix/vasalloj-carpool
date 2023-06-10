@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 :root{
-    --primary: #ff710d;
+    --primary: #fff; /* 60% */
+    --secondary: #EBF1F4; /* 30% */
+    --accent: #ff710d; /* 10% */
 }
 
 /* CSS Reset */

@@ -29,21 +29,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <title>Document</title>
     
 </head>
 <body>
+
     <?php
         require 'dbcon.php';
         include 'header.php';
         
     ?>
-    <!-- Available Trips Container -->
     
-    <div style="margin: auto; margin-top: 80px; max-width: 75%; padding: 10px;" class="flex flex-main-center flex-cross-center">
-        
-        <div class="flex flex-wrap flex-main-center flex-gap-20" style="width: 90%;">
-        <?php 
+    <!-- Available Trips Container -->
+    <?php 
             $uID = $_SESSION['uID'];
             $query = "SELECT user_status FROM users WHERE uID=$uID AND uType='Passenger';";
             $result = mysqli_query($con, $query);
@@ -51,7 +51,43 @@
                 $row = mysqli_fetch_assoc($result);
                 if($row['user_status'] == 'Available' || $row['user_status'] == 'Pending Booking'){
                     mysqli_free_result($result);
-                    $query = "SELECT
+                    echo "<script>
+                    $(document).ready(function() {
+                      $('#search').keyup(function() {
+                        var input = $(this).val();
+                    
+                        if (input != '') {
+                          $.ajax({
+                            url: 'livesearch.php',
+                            method: 'POST',
+                            data: { input: input },
+                            success: function(data) {
+                              $('#search-result').html(data);
+                            }
+                          });
+                        } else{
+                            $.ajax({
+                                url: 'livesearch.php',
+                                method: 'POST',
+                                success: function(data) {
+                                  $('#search-result').html(data);
+                                }
+                              });
+                        }
+                      });
+                    });
+                    </script>";?>
+    <div style="margin: auto; margin-top: 80px; max-width: 30%; padding: 10px;">
+    <input type="text" name="" id="search" class="text-box" placeholder="Search">
+    
+    </div>
+    <div style="margin: 10px auto; max-width: 75%; padding: 10px;" class="flex flex-main-center flex-cross-center">
+        
+        <div class="flex flex-wrap flex-main-center flex-gap-20" style="width: 90%;" id="search-result">
+        
+
+                <?php
+                                    $query = "SELECT
                     trip.idTrip,
                     trip.start_location,
                     trip.end_location,
@@ -59,6 +95,7 @@
                     trip.seats_avail,
                     users.fname,
                     users.lname,
+                    users.prof_path,
                     car.car_make,
                     car.model,
                     trip.status,
@@ -90,7 +127,7 @@
                             <div style='text-align: left;'>
                                 <div class='flex flex-cross-start flex-gap-10'>
                                     <div>
-                                        <img src='./img/yuka-makoto2.jpg' alt='' style='width: 45px; border-radius: 45px;'>
+                                        <img src='./img/".$row['prof_path']."' alt='' style='width: 60px; border-radius: 60px; object-fit: cover; height: 60px;'>
                                     </div>
                                     <div>
                                         <h3>".$row['fname']." ".$row['lname']."</h3>
@@ -119,7 +156,7 @@
     </div>
 
     <!-- Passenger Booked Trip Details Container -->
-    <div class="container" id="passenger-container" style="display: none; margin: auto;width: fit-content;">
+    <div class="container" id="passenger-container" style="display: none; margin: auto; margin-top: 100px; width: fit-content;">
         <?php 
             $id = $_SESSION['uID'];
             $query = "SELECT user_status, uType FROM users WHERE uID=$id;";
@@ -228,7 +265,7 @@
         </div>
     </div>
     <!-- Driver Register Route Container -->
-    <div class="container" id="register-route" style="display: none; width: 50%; text-align: left;">
+    <div class="container" id="register-route" style="display: none; width: 50%; text-align: left; margin-top: 100px;">
         <div class="register-route" >
             <?php 
                 if(isset($_GET['success'])){

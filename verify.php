@@ -14,7 +14,7 @@
         $password = $_SESSION['pswd'];
         $utype = 'Passenger';
         
-        $result = mysqli_query($con, "INSERT INTO users VALUES (null, '$fname', '$mname', '$lname', '$phone', '$bday', '$street', '$brgy', '$city', '$prov',  '$email', '$password', '$utype', 10, null, 0, 'Available', 0);");
+        $result = mysqli_query($con, "INSERT INTO users VALUES (null, '$fname', '$mname', '$lname', '$phone', '$bday', '$street', '$brgy', '$city', '$prov',  '$email', '$password', '$utype', 10, null, 0, 'Available', 0, DEFAULT);");
         if($result){
             header("Location: ./login.php");
             exit;

@@ -40,7 +40,7 @@ body {
     text-decoration: none;
     transition: scale 0.5s, outline 0.5s, background 0.5s, color 0.5s;
 }
-.button:hover{
+.button:hover:enabled{
     outline: 1px solid #ff710d;
     background-color: white;
     scale: 1.1;
@@ -49,5 +49,10 @@ body {
 .button:active{
     background-color: #ff710d;
     color: white;
+    outline: 1px solid white;
+}
+.button:disabled{
+    background-color: #4d4d4d;
+    color: #EBF1F4;
     outline: 1px solid white;
 }
