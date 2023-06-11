@@ -30,7 +30,7 @@
                     $_SESSION['status'] = 'Cancelled';
                 }
             } else if($row['status'] == 'Completed' && $row['user_status'] == 'Finished Trip' && $row['status'] != $_SESSION['status']){
-                $query = "UPDATE users SET user_status = 'Available' WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $id);";
+                $query = "UPDATE users SET user_status = 'Available' WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $trip_id);";
                 if(mysqli_query($con, $query)){
                     $response = array('response_status' => 'complete', 'heading' => 'Successful Trip', 'paragraph' => 'You have finished your trip', 'alerted' => $row['alert'], 'type' => $type);
                     $_SESSION['status'] = 'Completed';

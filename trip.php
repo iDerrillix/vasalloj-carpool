@@ -51,7 +51,9 @@
                 header("Location: trip.php?id=$id&status=insufficient");
             }else {
                 $query = "SELECT seats_avail FROM trip WHERE idTrip=$id;";
-                $seats_avail = mysqli_fetch_column(mysqli_query($con, $query), 0);
+                $result = mysqli_query($con, $query);
+                $row = mysqli_fetch_assoc($result);
+                $seats_avail = $row['seats_avail'];
                 if($seats_avail > 0){
                     $query = "SELECT Rates_idRates FROM trip_passengers WHERE Trip_idTrip = $id AND Rates_idRates = $seat_id;";
                     $result = mysqli_query($con, $query);

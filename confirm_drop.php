@@ -10,12 +10,23 @@
             $query .= "UPDATE users SET ticket_bal=ticket_bal - (SELECT price FROM rates WHERE idRates = (SELECT Rates_idRates FROM trip_passengers WHERE Trip_idTrip = (SELECT MAX(Trip_idTrip) FROM trip_passengers WHERE Users_idUsers = $uID) AND Users_idUsers = $uID)) WHERE uID=$uID;";
             $response = array('response_status' => 'onboard_success', 'heading' => 'Successful Confirmation', 'paragraph' => 'Payment deducted from your account');
         } else if($action == 'drop'){
-            $query = "UPDATE users SET user_status='Available' WHERE uID=$uID;";
-            $query .= "UPDATE users SET ticket_bal = ticket_bal-30 WHERE uID=$uID;";
-            $query .= "UPDATE users SET ticket_bal = ticket_bal+30 WHERE uID=(SELECT Users_idUsers FROM trip WHERE idTrip=$id);";
-            $query .= "UPDATE trip SET seats_avail=seats_avail+1 WHERE idTrip=$id;";
-            $query .= "DELETE FROM trip_passengers WHERE Users_idUsers=$uID AND Trip_idTrip=$id;";
-            $response = array('response_status' => 'drop_success', 'heading' => 'Trip Dropped', 'paragraph' => 'A cancellation fee of 30 tickets was deducted from your account');
+            $query = "SELECT trip.status FROM trip WHERE trip.idTrip-$id;";
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+            if($row['status'] == 'Waiting'){
+                $query = "UPDATE users SET user_status='Available' WHERE uID=$uID;";
+                $query .= "UPDATE users SET ticket_bal = ticket_bal-30 WHERE uID=$uID;";
+                $query .= "UPDATE users SET ticket_bal = ticket_bal+30 WHERE uID=(SELECT Users_idUsers FROM trip WHERE idTrip=$id);";
+                $query .= "UPDATE trip SET seats_avail=seats_avail+1 WHERE idTrip=$id;";
+                $query .= "DELETE FROM trip_passengers WHERE Users_idUsers=$uID AND Trip_idTrip=$id;";
+                $response = array('response_status' => 'drop_success', 'heading' => 'Trip Dropped', 'paragraph' => 'A cancellation fee of 30 tickets was deducted from your account');
+            } else if($row['status'] == 'Scheduled'){
+                $query = "UPDATE users SET user_status='Available' WHERE uID=$uID;";
+                $query .= "UPDATE trip SET seats_avail=seats_avail+1 WHERE idTrip=$id;";
+                $query .= "DELETE FROM trip_passengers WHERE Users_idUsers=$uID AND Trip_idTrip=$id;";
+                $response = array('response_status' => 'drop_success', 'heading' => 'Trip Dropped', 'paragraph' => 'No fee was charged for the dropping of this trip');
+            }
+            
         }
         $result = mysqli_multi_query($con, $query);
         if(!$result){

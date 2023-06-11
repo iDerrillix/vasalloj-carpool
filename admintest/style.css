@@ -33,8 +33,7 @@
   font-size: 24px;
   font-weight: 500;
 }
-.sidebar .nav-links{
-}
+
 .sidebar .nav-links li{
   position: relative;
   list-style: none;
@@ -252,9 +251,7 @@ nav .profile-details i{
   font-size: 20px;
   font-weight: 500;
 }
-.home-content .sales-boxes{
-  /* padding: 0 20px; */
-}
+
 
 /* left box */
 

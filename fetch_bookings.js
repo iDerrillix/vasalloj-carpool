@@ -13,9 +13,8 @@ function fetchBookings(id){
         success: function(response){
             var encoded_response = JSON.parse(response);
             console.log("fetching");
-            console.log(encoded_response);
+            console.log(totalBookings);
             if(encoded_response.length !== 0){
-                console.log(encoded_response);
                 encoded_response.forEach(function(item) {
                     html_string = html_string + "<div class='flex flex-cross-center flex-main-spacebetween flex-gap-10 flex-wrap' style='margin-bottom: 25px;'>" +
                     "<div>"+ item.fname + " " + item.lname +"</div>" +
@@ -24,6 +23,7 @@ function fetchBookings(id){
                     
                     totalBookings++;
                     lastLength = encoded_response.length;
+                    console.log(totalBookings);
                 });
                 container.innerHTML = "<p>Booking</p><hr>" + html_string;
                 html_string = "";

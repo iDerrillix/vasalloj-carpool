@@ -183,7 +183,7 @@ if(!isset($_SESSION['uID'])){
               <span class="text"></span>
             </div>
           </div>
-          <i class="fa-sharp fa-solid fa-car-side" style=""></i>
+          <i class="fa-sharp fa-solid fa-car-side"></i>
         </div>
         <div class="box">
           <div class="right-side">
