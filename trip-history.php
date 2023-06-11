@@ -164,7 +164,7 @@
                     echo "
                     <div class='flex flex-main-spacebetween'>
                         <div class='flex flex-main-spacebetween'>
-                            <img src='./img/".$row['users.prof_path']."' alt='' style='width: 45px; border-radius: 45px; object-fit: cover; height: 45px;'>
+                            <img src='./img/".$row['prof_path']."' alt='' style='width: 45px; border-radius: 45px; object-fit: cover; height: 45px;'>
                             <div>
                                 <p class='main-text'>".$row['fname']." ".$row['lname']."</p>
                                 <p>".$row['uPhone']."</p>

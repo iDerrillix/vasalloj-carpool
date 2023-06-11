@@ -29,48 +29,56 @@ function resetAlertStatus(){
     }
   });
 }
-// Function to check booking status
+
 function checkBookingStatus(type) {
-  let lastStat = localStorage.getItem('status');
-    // Make an AJAX request to the server
+  console.log("function " + type);
     $.ajax({
-      url: 'check_booking.php', // Path to your server-side PHP script
+      url: 'check_booking.php', 
       method: 'POST',
       success: function(response) {
         var status = response.response_status;
         var heading = response.heading;
         var paragraph = response.paragraph;
         var alerted = response.alerted;
+        var typers = response.type;
         console.log(status);
-        console.log("Last Stat: " + lastStat);
-        if(lastStat !== status){
-          if (status === 'success') {
-            toggleModal(heading, paragraph);
-            alertnum();
-            localStorage.setItem('status', status);
-          }else if(status == 'confirm'){
-            toggleModal(heading, paragraph);
-            alertnum();
-            localStorage.setItem('status', status);
-            setTimeout(function (e){
-              window.location.href == 'index.php';
+        if (status === 'success') {
+          toggleModal(heading, paragraph);
+          setTimeout(function() {
+            window.location.href = 'index.php';
           }, 3000);
-        } else if(status == 'error'){
-              toggleModal(heading, paragraph);
-              alertnum();
-              localStorage.setItem('status', status);
-          } else{
-          }
+        } else if(status == 'confirm'){
+          toggleModal(heading, paragraph);
+          setTimeout(function() {
+            window.location.href = 'index.php';
+          }, 3000);
+        } else if(status == 'cancelled'){
+          toggleModal(heading, paragraph);
+          setTimeout(function() {
+            window.location.href = 'index.php';
+          }, 3000);
+        } else if(status == 'finished'){
+          toggleModal(heading, paragraph);
+          setTimeout(function() {
+            window.location.href = 'index.php';
+          }, 3000);
+        } else if(status == 'complete'){
+          toggleModal(heading, paragraph);
+          setTimeout(function() {
+            window.location.href = 'index.php';
+          }, 3000);
+        }else if(status == 'error'){
+            toggleModal(heading, paragraph);
+            alertnum();
         } else{
         }
         
         setTimeout(function() {
           checkBookingStatus();
-      }, 10000); // 5000 milliseconds = 5 seconds
+      }, 10000);
         
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        // Handle the error scenario
         toggleModal("Error", 'Error occurred while checking booking status.');
         console.log('Error occurred while sending data:', errorThrown);
         console.log('Server response:', jqXHR.responseText);
@@ -78,6 +86,38 @@ function checkBookingStatus(type) {
       
     });
     
+  }
+  function updateUser(id){
+    console.log("checking utype");
+    $.ajax({
+      url: 'fetch_type.php',
+      method: 'POST',
+      data: {uID: id},
+      success: function(response){
+        console.log(response);
+        var status = response.status;
+        var type = response.type;
+        if(status == 'success'){
+          console.log(type);
+          toggleModal("Application Accepted", "You have been accepted as a driver!");
+          setTimeout(function() {
+            window.location.href ='index.php';
+        }, 2000);
+        } else if(status == 'error'){
+          toggleModal("Error", "An unexpected error has occured");
+        } else{
+          console.log("do nothing");
+        }
+        setTimeout(function() {
+          updateUser(id);
+      }, 10000);
+      }, 
+      error: function(jqXHR, textStatus, errorThrown) {
+        toggleModal("Error", 'Error occurred while checking user type');
+        console.log('Error occurred while sending data:', errorThrown);
+        console.log('Server response:', jqXHR.responseText);
+      }
+    });
   }
   
 

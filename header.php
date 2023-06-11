@@ -56,6 +56,7 @@
     <script>
           $(document).ready(function() {
             checkBookingStatus('<?php echo $_SESSION['uType'];?>');
+            updateUser('<?=$_SESSION['uID']?>');
         });
     </script>
 </body>

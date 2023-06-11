@@ -67,9 +67,9 @@
                     $result = mysqli_query($con, $query);
                     while($row = mysqli_fetch_assoc($result)){
                         if($row['approved'] == 0){
-                            $approve = "No";
+                            $approve = "Not Registered";
                         } else {
-                            $approve = "Yes";
+                            $approve = "Registered";
                         }
                         echo "<tr>
                         <td>".$row['idCar']."</td>

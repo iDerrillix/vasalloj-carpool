@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <style>
+        body{
+            background-color: #fff;
+        }
         .nav{
         width: 100%;
         border-radius: 8px;
@@ -21,7 +24,22 @@
             transition: scale 0.5s;
         }
         .trip:hover{
-            scale: 1.05;
+            scale: 1.02;
+        }
+        #banner{
+            height: 40vh;
+            background-image: url("./img/banner.jpeg");
+            object-fit: cover;
+            max-width: 79%; 
+            border-radius: 10px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: 50% 35%;
+        }
+        #filter{
+            width: 36%;
+            min-width: 0;
+            margin: 0;
         }
     </style>
     <link rel="stylesheet" href="utilities.css">
@@ -60,7 +78,7 @@
                           $.ajax({
                             url: 'livesearch.php',
                             method: 'POST',
-                            data: { input: input },
+                            data: { input: input, type: 'location'},
                             success: function(data) {
                               $('#search-result').html(data);
                             }
@@ -75,86 +93,198 @@
                               });
                         }
                       });
+                      $('#filter-departure').change(function() {
+                        var input = $(this).val();
+
+                        if (input != '') {
+                            $.ajax({
+                              url: 'livesearch.php',
+                              method: 'POST',
+                              data: { input: input, type: 'date'},
+                              success: function(data) {
+                                $('#search-result').html(data);
+                              }
+                            });
+                          } else{
+                              $.ajax({
+                                  url: 'livesearch.php',
+                                  method: 'POST',
+                                  success: function(data) {
+                                    $('#search-result').html(data);
+                                  }
+                                });
+                          }
+                      });
+                      $('#filter-seats').keyup(function() {
+                        var input = $(this).val();
+                        if (input != '') {
+                            $.ajax({
+                              url: 'livesearch.php',
+                              method: 'POST',
+                              data: { input: input, type: 'seat'},
+                              success: function(data) {
+                                $('#search-result').html(data);
+                              }
+                            });
+                          } else{
+                              $.ajax({
+                                  url: 'livesearch.php',
+                                  method: 'POST',
+                                  success: function(data) {
+                                    $('#search-result').html(data);
+                                  }
+                                });
+                          }
+                      });
+                      
                     });
                     </script>";?>
-    <div style="margin: auto; margin-top: 80px; max-width: 30%; padding: 10px;">
-    <input type="text" name="" id="search" class="text-box" placeholder="Search">
-    
-    </div>
-    <div style="margin: 10px auto; max-width: 75%; padding: 10px;" class="flex flex-main-center flex-cross-center">
+                    
+    <div style="margin: auto; margin-top: 100px;" id="banner">
         
-        <div class="flex flex-wrap flex-main-center flex-gap-20" style="width: 90%;" id="search-result">
-        
+        <div class="slider background-tint-dark">
+            <div class="slides background-tint-dark">
+                <input type="radio" name="radio-btn" id="radio1">
+                <input type="radio" name="radio-btn" id="radio2">
+                <input type="radio" name="radio-btn" id="radio3">
+                <input type="radio" name="radio-btn" id="radio4">
 
-                <?php
-                                    $query = "SELECT
-                    trip.idTrip,
-                    trip.start_location,
-                    trip.end_location,
-                    trip.departure_date,
-                    trip.seats_avail,
-                    users.fname,
-                    users.lname,
-                    users.prof_path,
-                    car.car_make,
-                    car.model,
-                    trip.status,
-                    MIN(rates.price) AS 'price'
-                  FROM
-                    trip
-                    JOIN users ON users.uID = trip.Users_idUsers
-                    JOIN car ON trip.Car_idCar = car.idCar
-                    JOIN rates ON rates.Trip_idTrip = trip.idTrip
-                  WHERE
-                    trip.status = 'Scheduled'
-                    AND trip.departure_date > CURRENT_TIMESTAMP
-                  GROUP BY
-                    trip.idTrip, 
-                    trip.start_location, 
-                    trip.end_location, 
-                    trip.departure_date, 
-                    trip.seats_avail, 
-                    users.fname, 
-                    users.lname, 
-                    car.car_make, 
-                    car.model, 
-                    trip.status;";
-                    $result = mysqli_query($con, $query);
-                    while($row = mysqli_fetch_assoc($result)){
-                    echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
-                        <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
-                        <div class='flex flex-main-spacebetween' style='width: 100%;'>
-                            <div style='text-align: left;'>
-                                <div class='flex flex-cross-start flex-gap-10'>
-                                    <div>
-                                        <img src='./img/".$row['prof_path']."' alt='' style='width: 60px; border-radius: 60px; object-fit: cover; height: 60px;'>
+                <div class="sliding first">
+                    
+                    <img src="./img/banner2.jpg" alt="">
+                </div>
+                <div class="sliding">
+                    <img src="./img/banner.jpeg" alt="">
+                </div>
+                <div class="sliding">
+                    <img src="./img/banner4.jpg" alt="">
+                </div>
+                <div class="sliding">
+                    <img src="./img/banner3.webp" alt="">
+                </div>
+            </div>
+        </div>
+        <script>
+        var counter = 1;
+        setInterval(function(){
+            document.getElementById('radio' + counter).checked = true;
+            counter++;
+            if(counter > 4){
+                counter = 1;
+            }
+        }, 5000);
+        </script>
+    </div>
+    <div class="flex flex-main-spacebetween flex-gap-20" style="width: 80%; margin: auto; margin-top: 20px; margin-bottom: 20px;">
+        <div id="filter" class="container" style="text-align: left;">
+            <h3 class="second-text">Filter Trips</h3>
+            <br>
+            <input type="text" name="" id="search" class="text-box" placeholder="Location" style="display: inline-block; width: 100%;">
+            <p class="main-text">Departure Time</p>
+            <input type="datetime-local" name="" id="filter-departure" class="text-box" placeholder="Date" min="<?php echo date('Y-m-d H:i:s');?>">
+            <input type="number" name="" id="filter-seats" placeholder="Available Seats" class="text-box">
+        </div>
+        <div style="width: 75%;">
+            <div style="max-width: 100%; " class="flex flex-main-start flex-cross-center">
+                
+                <div class="flex flex-wrap flex-main-start flex-gap-10" style="width: 100%;" id="search-result">
+                
+
+                        <?php
+                            $query = "SELECT
+                            trip.idTrip,
+                            trip.start_location,
+                            trip.end_location,
+                            trip.departure_date,
+                            trip.seats_avail,
+                            users.fname,
+                            users.lname,
+                            users.prof_path,
+                            car.car_make,
+                            car.model,
+                            trip.status,
+                            MIN(rates.price) AS 'price',
+                            driver_ratings.avg_rating,
+                            driver_ratings.rating_count
+                        FROM
+                            trip
+                            JOIN users ON users.uID = trip.Users_idUsers
+                            JOIN car ON trip.Car_idCar = car.idCar
+                            JOIN rates ON rates.Trip_idTrip = trip.idTrip
+                            LEFT JOIN (
+                                SELECT
+                                    trip.Users_idUsers,
+                                    AVG(rating.rating_stars) AS avg_rating,
+                                    COUNT(rating.idRating) AS rating_count
+                                FROM
+                                    trip
+                                    JOIN rating ON rating.Trip_idTrip = trip.idTrip
+                                GROUP BY
+                                    trip.Users_idUsers
+                            ) AS driver_ratings ON driver_ratings.Users_idUsers = users.uID
+                        WHERE
+                            trip.status = 'Scheduled'
+                            AND trip.departure_date > CURRENT_TIMESTAMP
+                        GROUP BY
+                            trip.idTrip,
+                            trip.start_location,
+                            trip.end_location,
+                            trip.departure_date,
+                            trip.seats_avail,
+                            users.fname,
+                            users.lname,
+                            car.car_make,
+                            car.model,
+                            trip.status;";
+                            $result = mysqli_query($con, $query);
+                            while($row = mysqli_fetch_assoc($result)){
+                                $stars_string = "";
+                                if($row['avg_rating'] === null){
+                                    $stars_string = "Not yet rated";
+                                } else{
+                                    for($i = 0; $i < 5; $i++){
+                                        if($i < $row['avg_rating']){
+                                            $stars_string = $stars_string."<i class='fa-solid fa-star' style='color: #ff710d;'></i>";
+                                        } else{
+                                            $stars_string = $stars_string."<i class='fa-solid fa-star' style='color: #d0d0d0;'></i>";
+                                        }
+                                    }
+                                }
+                            echo "<a href='trip.php?id=".$row['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
+                                <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
+                                <div class='flex flex-main-spacebetween' style='width: 100%;'>
+                                    <div style='text-align: left;'>
+                                        <div class='flex flex-cross-start flex-gap-10'>
+                                            <div>
+                                                <img src='./img/".$row['prof_path']."' alt='' style='width: 60px; border-radius: 60px; object-fit: cover; height: 60px;'>
+                                            </div>
+                                            <div>
+                                                <h3 class='main-text'>".$row['fname']." ".$row['lname']."</h3>
+                                                <p>".$stars_string."</p>
+                                                <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;' class='main-text'>".$row['start_location']."</p><br>
+                                                <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;' class='main-text'>".$row['end_location']."</p><br>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
-                                    <div>
-                                        <h3>".$row['fname']." ".$row['lname']."</h3>
-                                        <p>".$row['car_make']." ".$row['model']."</p>
-                                        <i class='fa-solid fa-location-pin' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['start_location']."</p><br>
-                                        <i class='fa-solid fa-location-dot' style='color: #ff710d;'></i><p style='display: inline-block; margin-left: 5px;'>".$row['end_location']."</p><br>
+                                    <div style='text-align: right;'>
+                                        <p style='color:#ff710d; font-weight: bold;'>Starts <i class='fa-solid fa-ticket' ></i> ".$row['price']."</p>
+                                        <p>".date("D d M", strtotime($row['departure_date']))."</p>
+                                        <p>".date("g:i A", strtotime($row['departure_date']))."</p>
+                                        <p>".$row['seats_avail']." seats left</p>
                                     </div>
                                 </div>
-                                
                             </div>
-                            <div style='text-align: right;'>
-                                <p>Starts <i class='fa-solid fa-ticket' style='color:#ff710d;'></i> ".$row['price']."</p>
-                                <p>".date("D d M", strtotime($row['departure_date']))."</p>
-                                <p>".date("g:i A", strtotime($row['departure_date']))."</p>
-                                <p>".$row['seats_avail']." seats left</p>
-                            </div>
-                        </div>
-                    </div>
-                    </a>";
+                            </a>";
+                            }
+                        }
                     }
-                }
-            }
-            
-        ?>
+                    
+                ?>
+                </div>
+            </div>
         </div>
     </div>
-
     <!-- Passenger Booked Trip Details Container -->
     <div class="container" id="passenger-container" style="display: none; margin: auto; margin-top: 100px; width: fit-content;">
         <?php 
@@ -204,6 +334,8 @@
                         <button class='input-btn' style='margin: 20px 0;' id='confirm-onboard'>Confirm Onboard</button>
                         <button class='input-btn' style='margin: 20px 0;' id='drop-ride'>Drop Trip</button>
                     ";
+                } else if($row['status'] == 'Scheduled'){
+                    echo "<button class='input-btn' style='margin: 20px 0;' id='drop-ride'>Drop Trip</button>";
                 }
             ?>
 
@@ -225,7 +357,7 @@
                             toggleModal(heading, paragraph);
                             setTimeout(function (e){
                                 location.reload();
-                            }, 3000);
+                            }, 2000);
                         },
                         error: function(xhr, status, error){
                             console.error(error);
@@ -247,6 +379,9 @@
                             var heading = response.heading;
                             var paragraph = response.paragraph;
                             toggleModal(heading, paragraph);
+                            setTimeout(function (e){
+                                location.reload();
+                            }, 2000);
                             
                         },
                         error: function(xhr, status, error){
@@ -255,12 +390,20 @@
 
                     });
                 }
-                document.querySelector("#confirm-onboard").addEventListener("click", function(e){
+                if($('#confirm-onboard').length){
+                    document.querySelector("#confirm-onboard").addEventListener("click", function(e){
                     confirmBoard();
                 });
-                document.querySelector("#drop-ride").addEventListener("click", function(e){
+                }
+                if($('#drop-ride').length){
+                    document.querySelector("#drop-ride").addEventListener("click", function(e){
+                    console.log("test");
                     dropRide(<?php echo $row['idTrip'];?>);
+
                 });
+                }
+                
+                
             </script>
         </div>
     </div>
@@ -288,7 +431,7 @@
                 <p><b>ROUTE DETAILS</b></p>
                 <input type="text" name="start_loc" id="" placeholder="Start Location" class="text-box" required>
                 <input type="text" name="end_loc" id="" placeholder="End Location" class="text-box" required>
-                <input placeholder="Departure Time and Date" class="text-box" type="text" onfocus="(this.type='datetime-local')" id="date" name="departure_date" required/>
+                <input placeholder="Departure Time and Date" class="text-box" type="text" onfocus="(this.type='datetime-local')" id="date" name="departure_date" required min=""/>
                 <hr>
                     <select name="idCar" id="" class="text-box" required>
                         <?php 
@@ -339,6 +482,9 @@
                 echo "<script>document.querySelector('#trip-details').style.display = 'block';</script>";
             }
         ?>
+        <script>
+            console.log('<?php echo $_SESSION['uType'];?>');
+        </script>
         <div style="margin: auto; margin-top: 20px; max-width: 50%;" class="flex flex-main-spacebetween flex-cross-start flex-wrap">
                 <div class="container" style="width: 49%; text-align: left; margin: 0; display: inline;">
                     <p>Trip Settings</p>

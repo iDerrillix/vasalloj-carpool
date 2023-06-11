@@ -9,7 +9,7 @@
 
         $result = mysqli_multi_query($con, $query);
         if($result){
-            header("Location: ../admin/approve-cars.php");
+            header("Location: ../admintest/adminPanel.php");
             exit;
         } else {
             echo $con -> error;

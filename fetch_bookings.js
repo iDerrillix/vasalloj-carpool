@@ -2,6 +2,7 @@ let totalBookings = 0;
 var lastLength = 0;
 function fetchBookings(id){
     const container = document.querySelector("#booking-container");
+    container.innerHTML = "<p>Booking</p><hr>";
     let html_string = "";
     $.ajax({
         url: './async/fetch_booking.php',
@@ -12,7 +13,8 @@ function fetchBookings(id){
         success: function(response){
             var encoded_response = JSON.parse(response);
             console.log("fetching");
-            if(encoded_response.length !== 0 && lastLength < encoded_response.length ){
+            console.log(encoded_response);
+            if(encoded_response.length !== 0){
                 console.log(encoded_response);
                 encoded_response.forEach(function(item) {
                     html_string = html_string + "<div class='flex flex-cross-center flex-main-spacebetween flex-gap-10 flex-wrap' style='margin-bottom: 25px;'>" +

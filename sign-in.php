@@ -11,9 +11,10 @@
         $row = mysqli_fetch_assoc($result);
         $_SESSION['uID'] = $row['uID'];
         $_SESSION['uType'] = $row['uType'];
+        $_SESSION['status'] = $row['user_status'];
         if($rowCount == 1){
             if($row['uType'] == 'Admin'){
-                header("Location: ./admin/admin.php");
+                header("Location: ./admintest/adminPanel.php");
                 exit;
             } else {
                 header("Location: index.php");

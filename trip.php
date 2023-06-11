@@ -91,7 +91,7 @@
         <?php 
             if(isset($_GET['id'])){
                 $id = $_GET['id'];
-                $query = "SELECT trip.start_location, trip.end_location, trip.seats_avail, trip.departure_date, users.fname, users.mname, users.lname, users.prof_path, users.uPhone, users.uEmail, car.plate_no, car.car_make, car.model FROM trip JOIN users ON trip.Users_idUsers = users.uID JOIN car ON trip.Car_idCar = car.idCar WHERE trip.idTrip=$id;";
+                $query = "SELECT trip.start_location, trip.end_location, trip.seats_avail, trip.departure_date, users.fname, users.mname, users.lname, users.prof_path, users.uPhone, users.uEmail, car.plate_no, car.car_make, car.model, driver_ratings.avg_rating, driver_ratings.rating_count FROM trip JOIN users ON trip.Users_idUsers = users.uID JOIN car ON trip.Car_idCar = car.idCar LEFT JOIN ( SELECT trip.Users_idUsers, AVG(rating.rating_stars) AS avg_rating, COUNT(rating.idRating) AS rating_count FROM trip JOIN rating ON rating.Trip_idTrip = trip.idTrip GROUP BY trip.Users_idUsers ) AS driver_ratings ON driver_ratings.Users_idUsers = users.uID WHERE trip.idTrip=$id;";
                 $result = mysqli_query($con, $query);
                 if(!$result){
                     header("Location: trip.php?id=$id&status=error");
@@ -138,7 +138,23 @@
                                 <p class="main-text"><?php echo $row['fname'].' '.$row['mname'].' '.$row['lname']; ?></p>
                                 <p><?php echo $row['uPhone']; ?></p>
                                 <p><?php echo $row['uEmail']; ?></p>
-                                <a href='profile.php' class="input-btn" style="margin-top: 2px; padding: 0.6em 1.8em; display: inline-block;">View Profile</a>
+                                <p>
+                                    <?php 
+                                        $stars_string = "";
+                                        if($row['avg_rating'] === null){
+                                            $stars_string = "Not yet rated";
+                                        } else{
+                                            for($i = 0; $i < 5; $i++){
+                                                if($i < $row['avg_rating']){
+                                                    $stars_string = $stars_string."<i class='fa-solid fa-star' style='color: #ff710d;'></i>";
+                                                } else{
+                                                    $stars_string = $stars_string."<i class='fa-solid fa-star' style='color: #d0d0d0;'></i>";
+                                                }
+                                            }
+                                        }
+                                        echo $stars_string." - ".$row['rating_count']." ratings";
+                                    ?>
+                                </p>
                                 
                             </div>
                         </div>

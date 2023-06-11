@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="modal.css">
     <link rel="stylesheet" href="utilities.css">
     <link rel="stylesheet" href="./login.css">
     <meta charset="UTF-8">
@@ -12,6 +13,15 @@
     <?php 
         session_start();
     ?>
+    <div class="modal-background" onclick="toggleModal()"></div>
+    <div class="modal" id="modal">
+        <h2>Thank you for contacting us!</h2>
+        <p>
+            Thank you for leaving an honest review!
+        </p>
+    </div>
+    <script src="modal.js">
+    </script>
     <div class="login-form center-div">
         <div class="flex flex-main-spacebetween">
             <div id="left" class="flex flex-col flex-main-center flex-cross-center">
@@ -34,9 +44,8 @@
                     <?php
                     if(isset($_SESSION['uID'])){
                         unset($_SESSION['uID']);
-                    }
-                    if(isset($_GET['message']) && $_GET['message'] == 'loginfirst'){
-                        echo "<script>alert('You must be logged in first');</script>";
+                        unset($_SESSION['status']);
+                        unset($_SESSION['uType']);
                     }
                     if(isset($_GET['error'])){
                         echo "<p style='color: red; text-align: center;'>Wrong email and password</p>";
@@ -56,3 +65,13 @@
     
 </body>
 </html>
+<?php
+    if(isset($_GET['message']) && $_GET['message'] == 'loginfirst'){
+        echo "<script>toggleModal('Login First', 'You must login first');</script>";
+    }
+    if(isset($_GET['register'])){
+        echo "<script>toggleModal('Verify your email address', 'A link has been sent to your email address. Please check your inbox and click the link to verify your email.');</script>";
+    } else if(isset($_GET['verified'])){
+        echo "<script>toggleModal('Email Verified', 'You can now login using the email associated with your account.');</script>";
+    }
+?>

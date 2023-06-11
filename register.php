@@ -46,7 +46,7 @@
                 $mail->send();
                 
 
-                header("Location: login.php");
+                header("Location: login.php?register");
                 exit;
             }
             
