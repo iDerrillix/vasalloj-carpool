@@ -14,7 +14,7 @@
         }
     ?>
     <header>
-        <h3>Carpool</h3>
+        <img src="./img/tigerride-white.jpg" alt="" style="width: 50px; border-radius: 50px;">
         <ul>
             <li>
                 <a href="index.php"><i class="fa-solid fa-house"></i> Home</a>

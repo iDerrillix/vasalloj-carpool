@@ -13,7 +13,7 @@ if(!isset($_SESSION['uID'])){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Dashboard</title>
     <script src="https://kit.fontawesome.com/f17013d72c.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../plugins/js/jquery.min.js"></script>
     <script type="text/javascript" src="../plugins/js/popper.min.js"></script>
@@ -79,39 +79,9 @@ if(!isset($_SESSION['uID'])){
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="trips.php" class="active">
             <i class='bx bx-coin-stack' ></i>
-            <span class="links_name">Stock</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Total order</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-user' ></i>
-            <span class="links_name">Team</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-message' ></i>
-            <span class="links_name">Messages</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-heart' ></i>
-            <span class="links_name">Favrorites</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-cog' ></i>
-            <span class="links_name">Setting</span>
+            <span class="links_name">Trips List</span>
           </a>
         </li>
         <li class="log_out">
@@ -189,7 +159,7 @@ if(!isset($_SESSION['uID'])){
           <div class="right-side">
             <div class="box-topic">Most popular Car</div>
             <?php
-              $sql = "SELECT COUNT(model) AS count, model, capacity, car_make, type FROM CAR GROUP BY model ORDER BY count DESC";
+              $sql = "SELECT COUNT(model) AS count, model, capacity, car_make, type FROM car GROUP BY model ORDER BY count DESC;";
               $result = mysqli_query($con, $sql);
               $row = mysqli_fetch_assoc($result);
             ?>
@@ -267,6 +237,12 @@ if(!isset($_SESSION['uID'])){
                 <tbody>
                   <tr>
                     <?php
+                    if(isset($_GET['ref'])){
+                      $finalRef = $_GET['ref'];
+                      $finalID = $_GET['id'];
+                      $sql = "UPDATE cashtransaction SET gcash_ref = $finalRef WHERE idCashTransac = $finalID";
+                      $result = mysqli_query($con, $sql);
+                    }
                     $placeholder = 'REF ID';
                     $self = $_SERVER['PHP_SELF'];
                     $sql = "SELECT * FROM cashtransaction WHERE transac_status='Pending';";

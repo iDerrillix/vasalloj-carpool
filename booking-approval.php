@@ -6,7 +6,6 @@
         if($_GET['book'] == 'false'){
             $query = "UPDATE users SET user_status='Available' WHERE uID=$id;";
             $query .= "DELETE FROM trip_passengers WHERE Users_idUsers = $id AND Trip_idTrip = $trip_id;";
-            $query .= "UPDATE trip SET seats_avail=seats_avail+1 WHERE idTrip=$trip_id;";
             if(mysqli_multi_query($con, $query)){
                 header("Location: index.php");
                 exit;

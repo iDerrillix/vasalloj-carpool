@@ -22,7 +22,8 @@
         $uPhone = $_POST['gcash_no'];
         $new_bal = $bal - ($ticket_amount + $process_fee);
         $query = "INSERT INTO cashtransaction VALUES (null, 'Cash Out', null, $transac_amount, $process_fee, 0.00, '', '$uPhone', $new_bal, 'Pending', $id);";
-        $result = mysqli_query($con, $query);
+        $query .= "UPDATE users SET ticket_bal = $new_bal WHERE uID=$id;";
+        $result = mysqli_multi_query($con, $query);
         if($result){
             header("Location: ../tickets.php?msg=sell");
         }

@@ -1,10 +1,10 @@
 <?php
 require '../dbcon.php';
 if(!isset($_SESSION['uID'])){
-  header("Location: login.php?message=loginfirst");
+  header("Location: ../login.php?message=loginfirst");
   exit;
 } else if($_SESSION['uType'] != 'Admin'){
-  header("Location: login.php?message=loginfirst");
+  header("Location: ../login.php?message=loginfirst");
   exit;
 }
 ?>
@@ -13,7 +13,7 @@ if(!isset($_SESSION['uID'])){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Transactions Report</title>
     <script type="text/javascript" src="../plugins/js/jquery.min.js"></script>
     <script type="text/javascript" src="../plugins/js/popper.min.js"></script>
     <script type="text/javascript" src="../plugins/js/bootstrap.min.js"></script>
@@ -78,43 +78,13 @@ if(!isset($_SESSION['uID'])){
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="trips.php" class="active">
             <i class='bx bx-coin-stack' ></i>
-            <span class="links_name">Stock</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Total order</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-user' ></i>
-            <span class="links_name">Team</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-message' ></i>
-            <span class="links_name">Messages</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-heart' ></i>
-            <span class="links_name">Favrorites</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-cog' ></i>
-            <span class="links_name">Setting</span>
+            <span class="links_name">Trips List</span>
           </a>
         </li>
         <li class="log_out">
-          <a href="#">
+          <a href="../login.php">
             <i class='bx bx-log-out'></i>
             <span class="links_name">Log out</span>
           </a>
@@ -140,16 +110,7 @@ if(!isset($_SESSION['uID'])){
           <div class="right-side">
             <div class="box-topic">Most Cash ins</div>
             <?php
-              $sql = "SELECT COUNT(cashtransaction.idCashTransac) AS count,
-              CONCAT(users.fname ,' ',users.lname) AS name,
-              transac_type,
-              SUM(cashtransaction.transac_amount) AS count2,
-              convert_fee
-              FROM cashtransaction
-              JOIN users ON users.uID = cashtransaction.Users_idUsers
-              WHERE transac_status = 'complete'
-              AND transac_type = 'Cash In'
-              GROUP BY cashtransaction.Users_idUsers;";
+              $sql = "SELECT COUNT(cashtransaction.idCashTransac) AS count, CONCAT(users.fname ,' ',users.lname) AS name, transac_type, SUM(cashtransaction.transac_amount) AS count2, convert_fee FROM cashtransaction JOIN users ON users.uID = cashtransaction.Users_idUsers WHERE transac_status = 'complete' AND transac_type = 'Cash In' GROUP BY cashtransaction.Users_idUsers ORDER BY count2 DESC LIMIT 1;";
               $result = mysqli_query($con, $sql);
               $row = mysqli_fetch_assoc($result);
             ?>

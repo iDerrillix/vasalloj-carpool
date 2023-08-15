@@ -1,10 +1,10 @@
 <?php
 require '../dbcon.php';
 if(!isset($_SESSION['uID'])){
-  header("Location: login.php?message=loginfirst");
+  header("Location: ../login.php?message=loginfirst");
   exit;
 } else if($_SESSION['uType'] != 'Admin'){
-  header("Location: login.php?message=loginfirst");
+  header("Location: ../login.php?message=loginfirst");
   exit;
 }
 ?>
@@ -13,7 +13,7 @@ if(!isset($_SESSION['uID'])){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>User List</title>
     <script type="text/javascript" src="../plugins/js/jquery.min.js"></script>
     <script type="text/javascript" src="../plugins/js/popper.min.js"></script>
     <script type="text/javascript" src="../plugins/js/bootstrap.min.js"></script>
@@ -77,43 +77,13 @@ if(!isset($_SESSION['uID'])){
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="trips.php" class="active">
             <i class='bx bx-coin-stack' ></i>
-            <span class="links_name">Stock</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Total order</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-user' ></i>
-            <span class="links_name">Team</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-message' ></i>
-            <span class="links_name">Messages</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-heart' ></i>
-            <span class="links_name">Favrorites</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-cog' ></i>
-            <span class="links_name">Setting</span>
+            <span class="links_name">Trips List</span>
           </a>
         </li>
         <li class="log_out">
-          <a href="#">
+          <a href="../login.php">
             <i class='bx bx-log-out'></i>
             <span class="links_name">Log out</span>
           </a>
@@ -268,7 +238,7 @@ if(!isset($_SESSION['uID'])){
                 <tbody>
                   <tr>
                     <?php
-                      $sql = "SELECT * FROM users WHERE uType = 'Driver'";
+                      $sql = "SELECT * FROM users WHERE uType = 'Driver' AND applicant=0";
                       $result = mysqli_query($con, $sql);
                       while($row = mysqli_fetch_assoc($result)):
                     ?>

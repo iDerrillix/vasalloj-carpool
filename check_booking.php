@@ -26,14 +26,24 @@
                     $response = array('response_status' => 'cancelled', 'heading' => 'Trip Cancelled', 'paragraph' => 'Trip was cancelled by the driver. All payments refunded', 'alerted' => $row['alert'], 'type' => $type);
                     $_SESSION['status'] = 'Cancelled';
                 } else{
+                    $query = "UPDATE users SET user_status = 'Available' WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $trip_id);";
+                    mysqli_query($con, $query);
                     $response = array('response_status' => 'cancelled', 'heading' => 'Trip Cancelled', 'paragraph' => 'Trip was cancelled by the driver', 'alerted' => $row['alert'], 'type' => $type);
                     $_SESSION['status'] = 'Cancelled';
                 }
             } else if($row['status'] == 'Completed' && $row['user_status'] == 'Finished Trip' && $row['status'] != $_SESSION['status']){
                 $query = "UPDATE users SET user_status = 'Available' WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $trip_id);";
                 if(mysqli_query($con, $query)){
-                    $response = array('response_status' => 'complete', 'heading' => 'Successful Trip', 'paragraph' => 'You have finished your trip', 'alerted' => $row['alert'], 'type' => $type);
-                    $_SESSION['status'] = 'Completed';
+                    $query = "SELECT user_status FROM users WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $trip_id);";
+                    if(mysqli_query($con, $query)){
+                        $row = mysqli_fetch_assoc($result);
+                        $response = array('response_status' => 'complete', 'heading' => 'Successful Trip', 'paragraph' => 'You have finished your trip'.$row['user_status'], 'alerted' => $row['alert'], 'type' => $type);
+                        $_SESSION['status'] = 'Completed';
+                    } else{
+                        $response = array('response_status' => 'error', 'heading' => 'Error', 'paragraph' => 'An unexpected error has occured', 'alerted' => $row['alert'], 'type' => $type);
+                        $_SESSION['status'] = 'error';
+                    }
+                    
                 } else{
                     $response = array('response_status' => 'error', 'heading' => 'Error', 'paragraph' => 'An unexpected error has occured', 'alerted' => $row['alert'], 'type' => $type);
                     $_SESSION['status'] = 'error';
@@ -52,7 +62,7 @@
             // $_SESSION['uType'] = $utype;
             $trip_id = $row['idTrip'];
             if($row['status'] == 'Completed' && $row['user_status'] == 'Finished Trip'){
-                $query = "SELECT SUM(rates.price) AS 'price' FROM rates JOIN trip_passengers ON trip_passengers.Rates_idRates = rates.idRates WHERE trip_passengers.Trip_idTrip = $trip_id;";
+                $query = "SELECT COALESCE(SUM(rates.price), 0) AS 'price' FROM rates JOIN trip_passengers ON trip_passengers.Rates_idRates = rates.idRates WHERE trip_passengers.Trip_idTrip = $trip_id;";
                 $result = mysqli_query($con, $query);
                 if($result){
                     $row = mysqli_fetch_assoc($result);

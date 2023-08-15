@@ -1,3 +1,6 @@
+<?php 
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +9,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Trip | TigerRide</title>
 </head>
 <body>
     <?php 
@@ -33,7 +36,8 @@
                 }else if($_GET['status'] == 'noseats'){
                     echo "<p style='color: red;'> All seats are already taken!</p>";
                 }else if($_GET['status'] == 'insufficient'){
-                    echo "<p style='color: red;'> You must have 250 tickets in your account to book this trip!</p>";
+                    $price = $_GET['price'];
+                    echo "<p style='color: red;'> You must have $price tickets in your account to book this trip!</p>";
                 }
             }
             
@@ -41,14 +45,19 @@
             $id = $_GET['trip_id'];
             $uID = $_SESSION['uID'];
             $seat_id = $_GET['seat_id'];
+            $query = "SELECT rates.price FROM rates WHERE rates.idRates = $seat_id;";
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+            $seat_price = $row['price'];
+            mysqli_free_result($result);
             $query = "SELECT `users`.`user_status`, `users`.`ticket_bal` FROM users WHERE uID=$uID;";
             $result = mysqli_query($con, $query);
             $row = mysqli_fetch_assoc($result);
             mysqli_free_result($result);
             if($row['user_status'] == 'Pending Booking'){
                 header("Location: trip.php?id=$id&status=pending");
-            } else if($row['ticket_bal'] < 250){
-                header("Location: trip.php?id=$id&status=insufficient");
+            } else if($row['ticket_bal'] < $seat_price){
+                header("Location: trip.php?id=$id&status=insufficient&price=$seat_price");
             }else {
                 $query = "SELECT seats_avail FROM trip WHERE idTrip=$id;";
                 $result = mysqli_query($con, $query);
@@ -89,6 +98,8 @@
                 header("Location: trip.php?id=$id&status=error");
             }
         }
+            
+            
         ?>
         <?php 
             if(isset($_GET['id'])){
@@ -153,8 +164,9 @@
                                                     $stars_string = $stars_string."<i class='fa-solid fa-star' style='color: #d0d0d0;'></i>";
                                                 }
                                             }
+                                            $stars_string = $stars_string." - ".$row['rating_count']." ratings";
                                         }
-                                        echo $stars_string." - ".$row['rating_count']." ratings";
+                                        echo $stars_string;
                                     ?>
                                 </p>
                                 

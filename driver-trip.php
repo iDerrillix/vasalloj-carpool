@@ -30,7 +30,7 @@
             $query = "UPDATE trip SET status='Completed' WHERE idTrip=$id;";
             $query .= "UPDATE users SET user_status = 'Finished Trip' WHERE uID IN (SELECT Users_idUsers FROM trip_passengers WHERE Trip_idTrip = $id);";
             $query .= "UPDATE users SET user_status = 'Finished Trip' WHERE uID IN (SELECT Users_idUsers FROM trip WHERE idTrip=$id);";
-            $query .= "UPDATE users SET ticket_bal = ticket_bal + (SELECT SUM(rates.price) FROM rates JOIN trip_passengers ON trip_passengers.Rates_idRates = rates.idRates WHERE trip_passengers.Trip_idTrip = $id) WHERE uID IN (SELECT Users_idUsers FROM trip WHERE idTrip=$id);";
+            $query .= "UPDATE users SET ticket_bal = ticket_bal + COALESCE( (SELECT SUM(rates.price) FROM rates JOIN trip_passengers ON trip_passengers.Rates_idRates = rates.idRates WHERE trip_passengers.Trip_idTrip = $id), 0) WHERE uID IN ( SELECT Users_idUsers FROM trip WHERE idTrip = $id);";
             $result = mysqli_multi_query($con, $query);
             if($result){
                 header("Location: index.php");

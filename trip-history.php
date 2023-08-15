@@ -24,7 +24,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Past Trip | TigerRide</title>
 </head>
 <body>
     <?php
@@ -146,7 +146,7 @@
         <br>
         <div class="flex flex-col">
             <?php 
-                $query = "SELECT users.fname, users.lname, users.uPhone, users.prof_path, rating.rating_stars FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = users.uID JOIN rating ON rating.Trip_idTrip = trip_passengers.Trip_idTrip WHERE trip_passengers.Trip_idTrip = $trip_id;";
+                $query = "SELECT users.fname, users.lname, users.uPhone, users.prof_path, rating.rating_stars, rating.rating_msg FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = users.uID JOIN rating ON rating.Trip_idTrip = trip_passengers.Trip_idTrip WHERE trip_passengers.Trip_idTrip = $trip_id;";
                 $result = mysqli_query($con, $query);
                 while($row = mysqli_fetch_assoc($result)){
                     $stars_string = "";
@@ -168,6 +168,7 @@
                             <div>
                                 <p class='main-text'>".$row['fname']." ".$row['lname']."</p>
                                 <p>".$row['uPhone']."</p>
+                                <p>\"".$row['rating_msg']."\"</p>
                             </div>
                         </div>
                         <div>

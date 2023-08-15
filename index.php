@@ -49,7 +49,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <title>Document</title>
+    <title>Home | TigerRide</title>
     
 </head>
 <body>
@@ -546,7 +546,7 @@
                     <!-- <p>Booking</p>
                     <hr>
                     <?php 
-                        $query = "SELECT users.uID, users.fname, users.lname, users.uPhone FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = Users.uID WHERE Trip_idTrip=$trip_id AND approved=0";
+                        $query = "SELECT users.uID, users.fname, users.lname, ( SELECT COUNT(*) FROM trip_passengers WHERE trip_passengers.Users_idUsers = users.uID ) AS trip_count FROM trip_passengers JOIN users ON trip_passengers.Users_idUsers = users.uID WHERE trip_passengers.Trip_idTrip = $trip_id AND trip_passengers.approved = 0;";
                         $result = mysqli_query($con, $query);
                         while($row = mysqli_fetch_assoc($result)){
                             echo "
@@ -555,7 +555,7 @@
                                     <p>".$row['fname']." ".$row['lname']."</p>
                                 </div>
                                 <div>
-                                    <p>".$row['uPhone']."</p>
+                                    <p>".$row['trip_count']."</p>
                                 </div>
                                 <div style='text-align: center;'>
                                     <a href='booking-approval.php?id=".$row['uID']."&book=true&trip=".$trip_id."' class='input-btn'><i class='fa-solid fa-check'></i></a>
@@ -568,16 +568,29 @@
                     ?> -->
                 </div>
         </div>
-        <div class="container" style="width: 50%; margin-top: 20px;">
+        <div class="container" style="width: 50%; margin-top: 20px; margin-bottom: 50px;">
             <p>Accepted Bookings</p>
             <hr>
             <?php 
-                $query = "SELECT users.fname, users.mname, users.lname, users.uPhone, users.user_status FROM trip_passengers JOIN users ON users.uID = trip_passengers.Users_idUsers WHERE trip_passengers.approved = 1 AND Trip_idTrip = $trip_id;";
+                $query = "SELECT 
+    users.uID, users.fname, users.lname, users.prof_path, users.uPhone, users.user_status,
+    rates.seat_position,
+    (
+        SELECT COUNT(*) 
+        FROM trip_passengers 
+        WHERE trip_passengers.Users_idUsers = users.uID
+    ) AS trip_count
+FROM trip_passengers 
+JOIN users ON trip_passengers.Users_idUsers = users.uID
+JOIN rates ON trip_passengers.Rates_idRates = rates.idRates
+WHERE trip_passengers.Trip_idTrip = $trip_id AND trip_passengers.approved = 1;";
                 $result = mysqli_query($con, $query);
                 while($row = mysqli_fetch_assoc($result)){
                     echo "<div class='flex flex-cross-center flex-main-spacebetween flex-gap-10 flex-wrap' style='margin: 7px auto; width: 50%;'>
+                        <div><img src='./img/".$row['prof_path']."' style='width: 45px; border-radius: 45px;'></div>
                         <div>".$row['fname']." ".$row['lname']."</div>
                         <div>".$row['uPhone']."</div>
+                        <div>".$row['seat_position']."</div>
                         <div style='color: #ff710d; font-weight: bold;'>".$row['user_status']."</div>
                     </div>";
                 }

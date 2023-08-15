@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Account | TigerRide</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body{
@@ -55,7 +55,7 @@
                     <input type="password" name="pswd" id="" placeholder="Password" required class="text-box">
                     <br>
                     <input type="checkbox" name="" id="agree">
-                    <label for="agree" class="second-text">Creating an account means that you agree with our <a href="">Terms and Conditions</a></label>
+                    <label for="agree" class="second-text">Creating an account means that you agree with our <a href="terms_and_conditions.html" target="_blank">Terms and Conditions</a></label>
                     <input type="submit" value="Create Account" name="submit" class="button" style="width: 100%;" id="submit-btn">
                 </form>
             </div>

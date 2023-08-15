@@ -16,7 +16,7 @@
                                     JOIN rating ON rating.Trip_idTrip = trip.idTrip
                                 GROUP BY
                                     trip.Users_idUsers
-                            ) AS driver_ratings ON driver_ratings.Users_idUsers = users.uID WHERE trip.status = 'Scheduled' AND trip.departure_date > CURRENT_TIMESTAMP AND (trip.start_location LIKE '{$input}%' OR trip.end_location LIKE '{$input}%') GROUP BY trip.idTrip, trip.start_location, trip.end_location, trip.departure_date, trip.seats_avail, users.fname, users.lname, car.car_make, car.model, trip.status; ";
+                            ) AS driver_ratings ON driver_ratings.Users_idUsers = users.uID WHERE trip.status = 'Scheduled' AND trip.departure_date > CURRENT_TIMESTAMP AND (trip.start_location LIKE '%{$input}%' OR trip.end_location LIKE '{$input}%') GROUP BY trip.idTrip, trip.start_location, trip.end_location, trip.departure_date, trip.seats_avail, users.fname, users.lname, car.car_make, car.model, trip.status; ";
         } else if($type == 'date'){
             $query = "SELECT trip.idTrip, trip.start_location, trip.end_location, trip.departure_date,  trip.seats_avail, users.fname, users.lname, users.prof_path, car.car_make, car.model,
             trip.status, MIN(rates.price), driver_ratings.avg_rating, driver_ratings.rating_count AS 'price' FROM trip JOIN users ON users.uID = trip.Users_idUsers JOIN car ON trip.Car_idCar = car.idCar JOIN rates ON rates.Trip_idTrip = trip.idTrip LEFT JOIN (

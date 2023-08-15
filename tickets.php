@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tickets | TigerRide</title>
 </head>
 <body>
     <?php 
@@ -55,24 +55,33 @@
             ?>
             <h3 class="second-text">BUY TICKETS</h3>
             <br>
-            <form action="./script/buy-ticket.php" method="POST">
-                <select name="ticket_amount" id="ticket_amount" required class="text-box">
-                    <option value="40">40 Tickets</option>
-                    <option value="80">80 Tickets</option>
-                    <option value="200">200 Tickets</option>
-                    <option value="450">450 Tickets</option>
-                </select>
-                
-                
-                <input type="hidden" name="transac_amount" value="50" id="transac_amount">
-                <input type="text" name="ref_no" id="" placeholder="GCash Transaction Ref. No." class="text-box" required>
-                <input type="tel" name="uPhone" id="" placeholder="GCash Account No." class="text-box" required>
-                <input type="submit" value="Buy Tickets" class="input-btn" name="submit" style="float: right;">
-                <p id="convertion_fee">Conversion Fee: ₱10</p>
-                <input type="hidden" name="convert_fee" value="10" id="convert_fee">
-                <p id="peso_amount">Total Cost: ₱50</p>
-                
-            </form>
+            <div class="flex flex-gap-20">
+                <div>
+                    <img src="./img/qr_code.jpg" alt="" width="200px">
+                </div>
+                <div style='width: 80%;'>
+                    <form action="./script/buy-ticket.php" method="POST">
+                        <select name="ticket_amount" id="ticket_amount" required class="text-box">
+                            <option value="40">40 Tickets</option>
+                            <option value="80">80 Tickets</option>
+                            <option value="200">200 Tickets</option>
+                            <option value="450">450 Tickets</option>
+                        </select>
+                        
+                        
+                        <input type="hidden" name="transac_amount" value="50" id="transac_amount">
+                        <input type="text" name="ref_no" id="" placeholder="GCash Transaction Ref. No." class="text-box" required>
+                        <input type="tel" name="uPhone" id="" placeholder="GCash Account No." class="text-box" required>
+                        <input type="submit" value="Buy Tickets" class="input-btn" name="submit" style="float: right;">
+                        <p id="convertion_fee">Conversion Fee: ₱10</p>
+                        <input type="hidden" name="convert_fee" value="10" id="convert_fee">
+                        <p id="peso_amount">Total Cost: ₱50</p>
+                        
+                    </form>
+                </div>
+            </div>
+            
+            
     </div>
     <div class="container" style="width: 50%; margin-top: 20px; display: none; text-align: left;" id="cash-out">
     <?php 
@@ -109,13 +118,14 @@
         <table class="simple-table" style="width: 100%;">
                 <?php
                     $id = $_SESSION['uID'];
-                    $query = "SELECT cashtransaction.idCashTransac, cashtransaction.transac_type, cashtransaction.transac_amount, cashtransaction.process_fee, cashtransaction.convert_fee, cashtransaction.transac_bal, cashtransaction.transac_date, users.fname, users.mname, users.lname FROM cashtransaction JOIN users on cashtransaction.Users_idUsers = users.uID WHERE cashtransaction.Users_idUsers = $id AND cashtransaction.transac_status = 'Complete';";
+                    $query = "SELECT cashtransaction.idCashTransac, cashtransaction.transac_type, cashtransaction.gcash_ref, cashtransaction.transac_amount, cashtransaction.process_fee, cashtransaction.convert_fee, cashtransaction.transac_bal, cashtransaction.transac_date, users.fname, users.mname, users.lname FROM cashtransaction JOIN users on cashtransaction.Users_idUsers = users.uID WHERE cashtransaction.Users_idUsers = $id AND cashtransaction.transac_status = 'Complete';";
                     $result = mysqli_query($con, $query);
                     while($row = mysqli_fetch_assoc($result)){
                         echo "<tr>
                         <td style='color: #ff710d; font-weight: bold;'>#".$row['idCashTransac']."</td>
                         <td class='cell-bold'>".$row['transac_type']."</td>
                         <td class='second-text'>".date("M d Y g:i A", strtotime($row['transac_date']))."</td>
+                        <td>Ref. ID: ".$row['gcash_ref']."</td>
                         <td>".$row['transac_amount']."</td>
                         <td>".$row['process_fee']."</td>
                         <td>".$row['convert_fee']."</td>
@@ -128,10 +138,10 @@
                 
     <script>
         const select_ticket = document.querySelector("#ticket_amount");
-        select_ticket.addEventListener("mouseout", function(e) {
+        select_ticket.addEventListener("change", function(e) {
             let amount = Number(select_ticket.value);
             let fee = 0;
-            switch(amount){
+            switch (amount) {
                 case 40:
                     fee = 10;
                     break;
@@ -146,7 +156,6 @@
                     break;
             }
             let peso = amount + fee;
-            console.log(peso);
             document.querySelector("#transac_amount").value = amount + fee;
             document.querySelector("#convert_fee").value = fee;
             document.querySelector("#peso_amount").innerHTML = "Total Cost: ₱" + peso;

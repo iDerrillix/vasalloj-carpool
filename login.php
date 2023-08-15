@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login | TigerRide</title>
 </head>
 <body>
     <?php 
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div id="right">
-                <img src="./img/yuka-makoto2.jpg" alt="" style="width: 60px; border-radius: 60px;">
+                <img src="./img/tigerride-white.jpg" alt="" style="width: 100px; border-radius: 100px;">
                 <br>
                 <h3 style="font-size: 20px;">Welcome Back!</h3>
                 <p>Sign-in here</p>
