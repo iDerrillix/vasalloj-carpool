@@ -10,9 +10,7 @@
     <title>Login | TigerRide</title>
 </head>
 <body>
-    <?php 
-        session_start();
-    ?>
+    
     <div class="modal-background" onclick="toggleModal()"></div>
     <div class="modal" id="modal">
         <h2>Thank you for contacting us!</h2>
@@ -36,18 +34,13 @@
                 <h3 style="font-size: 20px;">Welcome Back!</h3>
                 <p>Sign-in here</p>
                 <br>
-                <form action="sign-in.php" method="POST">
+                <form action="/vasalloj-carpool/login" method="POST">
                     <label for="">Email Address</label><br>
-                    <input type="email" name="uEmail" id="" required class="text-box">
+                    <input type="email" name="uEmail" id="" required class="text-box" value="<?= isset($_POST['uEmail']) ? $_POST['uEmail'] : '';?>">
                     <label for="">Password</label><br>
                     <input type="password" name="uPswd" id="" required class="text-box">
                     <?php
-                    if(isset($_SESSION['uID'])){
-                        unset($_SESSION['uID']);
-                        unset($_SESSION['status']);
-                        unset($_SESSION['uType']);
-                    }
-                    if(isset($_GET['error'])){
+                    if(isset($errors['wrong'])){
                         echo "<p style='color: red; text-align: center;'>Wrong email and password</p>";
                     }
                     ?>
@@ -57,7 +50,7 @@
                 <br>
                 <p>No account yet?</p>
                 
-                <a href="sign-up.php" class="second-text" style="color: #ff710d; text-decoration: none;">Create one here</a>
+                <a href="/vasalloj-carpool/sign-up" class="second-text" style="color: #ff710d; text-decoration: none;">Create one here</a>
             </div>
         </div>
     

@@ -28,30 +28,31 @@
     <div class="container center-div" style="margin: auto; width: 70%;" id="sign-up">
         <div class="flex flex-main-spacebetween">
             <div id="right">
-                <a href="login.php" class="second-text" style="color: #ff710d; text-decoration: none;">Back to Login</a>
+                <a href="/vasalloj-carpool/login" class="second-text" style="color: #ff710d; text-decoration: none;">Back to Login</a>
                 <h3 style="font-size: 20px;">Create an account</h3>
                 <hr>
-                <form action="./register.php" method="POST">
+                <form action="/vasalloj-carpool/sign-up" method="POST">
                     <div class="flex flex-main-spacebetween flex-gap-10">
                         <div style="width: 50%;">
                             
                             <p>Personal Information</p>
-                            <input type="text" name="fname" id="" placeholder="First Name" required class="text-box">
-                            <input type="text" name="mname" id="" placeholder="Middle Name" required class="text-box">
-                            <input type="text" name="lname" id="" placeholder="Last Name" required class="text-box">
-                            <input type="tel" name="phone" id="" placeholder="Phone Number" required class="text-box">
-                            <input placeholder="Birthday" class="text-box" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" name="bday" required max="<?php echo date("Y-m-d", strtotime("-18 year", time()));?>"/>
+                            <input type="text" name="fname" id="" placeholder="First Name" required class="text-box" value="<?= isset($_POST['fname']) ? $_POST['fname'] : ''?>">
+                            <input type="text" name="mname" id="" placeholder="Middle Name" required class="text-box" value="<?= isset($_POST['mname']) ? $_POST['mname'] : ''?>">
+                            <input type="text" name="lname" id="" placeholder="Last Name" required class="text-box" value="<?= isset($_POST['lname']) ? $_POST['lname'] : ''?>">
+                            <input type="tel" name="phone" id="" placeholder="Phone Number" required class="text-box" value="<?= isset($_POST['phone']) ? $_POST['phone'] : ''?>">
+                            <input placeholder="Birthday" class="text-box" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" name="bday" required max="<?php echo date("Y-m-d", strtotime("-18 year", time()));?>" value="<?= isset($_POST['bday']) ? $_POST['bday'] : ''?>"/>
                         </div>
                         <div style="width: 50%;">
                             <p>Address</p>
-                            <input type="text" name="street" id="" placeholder="Street" required class="text-box">
-                            <input type="text" name="brgy" id="" placeholder="Barangay" required class="text-box">
-                            <input type="text" name="city" id="" placeholder="City" required class="text-box">
-                            <input type="text" name="prov" id="" placeholder="Province" required class="text-box">
+                            <input type="text" name="street" id="" placeholder="Street" required class="text-box" value="<?= isset($_POST['street']) ? $_POST['street'] : ''?>">
+                            <input type="text" name="brgy" id="" placeholder="Barangay" required class="text-box" value="<?= isset($_POST['brgy']) ? $_POST['brgy'] : ''?>">
+                            <input type="text" name="city" id="" placeholder="City" required class="text-box" value="<?= isset($_POST['city']) ? $_POST['city'] : ''?>">
+                            <input type="text" name="prov" id="" placeholder="Province" required class="text-box" value="<?= isset($_POST['prov']) ? $_POST['prov'] : ''?>">
                         </div>
                     </div>
                     <hr>
-                    <input type="email" name="email" id="" placeholder="Email Address" required class="text-box">
+                    <input type="email" name="email" id="" placeholder="Email Address" required class="text-box" value="<?= isset($_POST['email']) ? $_POST['email'] : ''?>">
+                    <?= isset($errors['taken']) ? "<p style='color: red'>Email is already taken</p>" : ''?>
                     <input type="password" name="pswd" id="" placeholder="Password" required class="text-box">
                     <br>
                     <input type="checkbox" name="" id="agree">
