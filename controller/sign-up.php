@@ -22,6 +22,17 @@
         
         
         if($database->execQuery("INSERT INTO users VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 10, null, 0, 'Available', 0, DEFAULT);", [$fname, $mname, $lname, $phone, $bday, $street, $brgy, $city, $prov,  $email, $password, $utype])){
+            unset($_SESSION['fname']);
+            unset($_SESSION['mname']);
+            unset($_SESSION['lname']);
+            unset($_SESSION['phone']);
+            unset($_SESSION['bday']);
+            unset($_SESSION['street']);
+            unset($_SESSION['brgy']);
+            unset($_SESSION['city']);
+            unset($_SESSION['prov']);
+            unset($_SESSION['email']);
+            unset($_SESSION['pswd']);
             header("Location: /vasalloj-carpool/login?verified");
         } else{
             dd('error registering user to system');
