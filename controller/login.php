@@ -15,9 +15,9 @@
             
             $user = $database->fetch("SELECT * FROM users WHERE uEmail=? AND uPswd=?", [$email, $password])->fetchAll();
             $rowCount = count($user);
-            $_SESSION['uID'] = $user['uID'];
-            $_SESSION['uType'] = $row['uType'];
-            $_SESSION['status'] = $row['user_status'];
+            $_SESSION['uID'] = $user[0]['uID'];
+            $_SESSION['uType'] = $row[0]['uType'];
+            $_SESSION['status'] = $row[0]['user_status'];
             if($rowCount == 1){
                 if($user['uType'] == 'Admin'){
                     echo 'redirect to admin';

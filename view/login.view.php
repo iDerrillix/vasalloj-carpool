@@ -34,7 +34,7 @@
                 <h3 style="font-size: 20px;">Welcome Back!</h3>
                 <p>Sign-in here</p>
                 <br>
-                <form action="/vasalloj-carpool/login" method="POST">
+                <form method="POST">
                     <label for="">Email Address</label><br>
                     <input type="email" name="uEmail" id="" required class="text-box" value="<?= isset($_POST['uEmail']) ? $_POST['uEmail'] : '';?>">
                     <label for="">Password</label><br>

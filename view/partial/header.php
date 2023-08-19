@@ -13,7 +13,7 @@
         <img src="./img/tigerride-white.jpg" alt="" style="width: 50px; border-radius: 50px;">
         <ul>
             <li>
-                <a href="index.php"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="/vasalloj-carpool/"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
                 <a href="profile.php"><i class="fa-solid fa-id-card"></i> Profile</a>
@@ -28,7 +28,7 @@
             <li>
                 <?php 
                     if(isset($_SESSION['uID'])){
-                        echo "<a class='log-btn' href='login.php'><b>Logout</b></a>";
+                        echo "<a class='log-btn' href='/vasalloj-carpool/login'><b>Logout</b></a>";
                     } else {
                         echo "<a class='log-btn' href='login.php'>Login</a>";
                     }
@@ -46,8 +46,8 @@
     </div>
     <script src="modal.js">
     </script>
-    <script src="alert.js">
-    </script>
+    <!-- <script src="alert.js">
+    </script> -->
     
     <script>
           $(document).ready(function() {
