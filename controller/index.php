@@ -56,6 +56,8 @@ GROUP BY
     $bookedTrip = $database->fetch("SELECT * FROM trip WHERE idTrip = (SELECT MAX(Trip_idTrip) FROM trip_passengers WHERE Users_idUsers = ".$_SESSION['uID'].");", [])->fetch();
     $cars = $database->fetch("SELECT * FROM car WHERE Users_idUsers=".$_SESSION['uID']." AND approved=1")->fetchAll();
 
+    $errors = [];
+    $responses = [];
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($user_type == 'Driver'){
             if(isset($_POST['register-route'])){
@@ -68,34 +70,20 @@ GROUP BY
                 $middle_seat = $_POST['middle_seat'];
                 $left_seat = $_POST['left_seat'];
                 $right_seat = $_POST['right_seat'];
-                
-                $query = "SELECT user_status FROM users WHERE uID=$id;";
-                $result = mysqli_query($con, $query);
-                $row = mysqli_fetch_assoc($result);
-                if($row['user_status'] == 'Pending Trip'){
-                    header("Location: index.php?fail=pending");
-                    exit;
-                }
-                mysqli_free_result($result);
-                $query = "INSERT INTO trip VALUES (null, '$start_loc', '$end_loc', '$departure_date', 4, 'Scheduled', $id, $idCar);";
-                $query .= "UPDATE users SET user_status = 'Pending Trip' WHERE uID=$id";
-                if(mysqli_multi_query($con, $query)){
-                    $trip_id = mysqli_insert_id($con);
-                    do {
-                        // Fetch results to clear the buffer
-                        if ($result = mysqli_store_result($con)) {
-                            mysqli_free_result($result);
-                        }
-                    } while (mysqli_next_result($con));
-                    
-                    $query = "INSERT INTO rates VALUES (null, 'Front Seat', $front_seat, $trip_id), (null, 'Middle Seat', $middle_seat, $trip_id), (null, 'Left Seat', $left_seat, $trip_id), (null, 'Right Seat', $right_seat, $trip_id);";
-                    if(mysqli_query($con, $query)){
-                        header("Location: index.php?success");
-                        exit;
+
+                if($user_status == 'Pending Trip'){
+                    $errors['pending-trip'] = 'You have a pending trip!';
+                } else{
+                    try{
+                        $database->execQuery("INSERT INTO trip VALUES (null, ?, ?, ?, 4, 'Scheduled', ?, ?)", [$start_loc, $end_loc, $departure_date, $id, $idCar]);
+                        $trip_id = $database->insertID();
+                        $database->execQuery("UPDATE users SET user_status = 'Pending Trip' WHERE uID=?", [$id]);
+                        $database->execQuery("INSERT INTO rates VALUES (null, 'Front Seat', ?, ?), (null, 'Middle Seat', ?, ?), (null, 'Left Seat', ?, ?), (null, 'Right Seat', ?, ?)", [$front_seat, $trip_id, $middle_seat, $trip_id, $left_seat, $trip_id, $right_seat, $trip_id]);
+                        $responses['route-success'] = 'Successfully registered a route';
+                    } catch(PDOException $e){
+                        $errors['pdo'] = 'Database error: ' . $e->getMessage() . "\n";
                     }
-                }
-                
-                
+                } 
             }
         }
     }

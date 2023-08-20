@@ -327,17 +327,17 @@ if($user_type == 'Passenger'){
     </div>
 <?php 
     }
-} else if($user_type == 'Driver'){ echo 'driver';?>
+} else if($user_type == 'Driver'){ ?>
     <!-- Driver Register Route Container -->
     <div class="container" id="register-route" style="width: 50%; text-align: left; margin-top: 100px;">
         <div class="register-route" >
             <?php 
-                if(isset($_GET['success'])){
+                if(isset($responses['route-success'])){
                     echo "<p style='color: green;'>Successfully registered a route</p>";
-                } else if(isset($_GET['fail'])){
-                    if($_GET['fail'] == 'pending'){
-                        echo "<p style='color: red;'>You have a pending trip!</p>";
-                    }
+                } else if(isset($errors['pending-trip'])){
+                    echo "<p style='color: red; text-align: center;'>You have a pending trip!</p>";
+                } else if(isset($errors['pdo'])){
+                    echo "<p style='color: red;'>".$errors['pdo']."</p>";
                 }
             ?>
             <form method="POST">
