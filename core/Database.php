@@ -23,5 +23,9 @@ class Database{
         }
         return false;
     }
+
+    public function insertID(){
+        return $this->connection->lastInsertId();
+    }
 }
 ?>
