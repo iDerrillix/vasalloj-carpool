@@ -48,12 +48,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <title>Home | TigerRide</title>
-    
 </head>
-<body>
-    
+<body>    
 <?php 
 if($user_type == 'Passenger'){
     if($user_status == 'Available' || $user_status == 'Pending Booking'){
@@ -327,8 +324,9 @@ if($user_type == 'Passenger'){
     </div>
 <?php 
     }
-} else if($user_type == 'Driver'){ ?>
-    <!-- Driver Register Route Container -->
+} else if($user_type == 'Driver'){ 
+    if($user_status == 'Available'){?>
+<!-- Driver Register Route Container -->
     <div class="container" id="register-route" style="width: 50%; text-align: left; margin-top: 100px;">
         <div class="register-route" >
             <?php 
@@ -378,7 +376,94 @@ if($user_type == 'Passenger'){
             </form>
         </div>
     </div>
-<?php }?>
+<?php } else{?>
+<!-- Driver Scheduled Trip Details -->
+    <div id="trip-details">
+        <div style="margin: auto; margin-top: 100px; max-width: 50%;" class="flex flex-main-spacebetween flex-cross-start flex-wrap">
+                <div class="container" style="width: 49%; text-align: left; margin: 0; display: inline;">
+                    <p>Trip Settings</p>
+                    <hr>
+                    <div class="flex flex-main-spacebetween flex-cross-start flex-wrap">
+                        <div>
+                            <h6>Trip ID</h6>
+                            <h6>Pickup Location</h6>
+                            <h6>Destination</h6>
+                            <h6>Departure Date</h6>
+                            <h6>Seats Available</h6>
+                            <h6>Status</h6>
+                        </div>
+                        <div>
+                            <p><?= $ongoingTrip['idTrip'] ?></p>
+                            <p><?= $ongoingTrip['start_location'] ?></p>
+                            <p><?= $ongoingTrip['end_location'] ?></p>
+                            <p><?= date("D d M g:i A", strtotime($ongoingTrip['departure_date'])) ?></p>
+                            <p><?= $ongoingTrip['seats_avail'] ?></p>
+                            <p><?= $ongoingTrip['status'] ?></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <?php 
+                        if($ongoingTrip['status'] == 'Scheduled'){
+                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=wait' class='input-btn'>In Pick-up Location</a>";
+                        }else if($ongoingTrip['status'] == 'Waiting'){
+                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=start' class='input-btn'>Start</a>";
+                        } else{
+                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=finish' class='input-btn'>Finish</a>";
+                        }
+                        echo " <a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=cancel' class='input-btn'>Cancel</a>";
+                    ?>
+                    
+                </div>
+                <div class="container" style="width: 49%; text-align: left; margin: 0;" id='booking-container'>
+                    <p>Booking</p>
+                    <hr>
+                    <script src="fetch_bookings.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            fetchBookings(<?php echo $ongoingTrip['idTrip'];?>);
+                        });
+                    </script>
+                    <?php
+                        foreach($incomingBookings as $booking){
+                            echo "
+                            <div class='flex flex-cross-center flex-main-spacebetween flex-gap-10 flex-wrap' id='booking-container'>
+                                <div>
+                                    <p>".$booking['fname']." ".$booking['lname']."</p>
+                                </div>
+                                <div>
+                                    <p>".$booking['trip_count']."</p>
+                                </div>
+                                <div style='text-align: center;'>
+                                    <a href='booking-approval.php?id=".$booking['uID']."&book=true&trip=".$ongoingTrip['idTrip']."' class='input-btn'><i class='fa-solid fa-check'></i></a>
+                                    <a href='booking-approval.php?id=".$booking['uID']."&book=false&trip=".$ongoingTrip['idTrip']."' class='input-btn'><i class='fa-solid fa-xmark'></i></a>
+                                </div>
     
+                            </div>
+                            ";
+                        }
+                    ?>
+                </div>
+        </div>
+        <div class="container" style="width: 50%; margin-top: 20px; margin-bottom: 50px;">
+            <p>Accepted Bookings</p>
+            <hr>
+            <?php 
+                foreach($acceptedBookings as $user){
+                    echo "<div class='flex flex-cross-center flex-main-spacebetween flex-gap-10 flex-wrap' style='margin: 7px auto; width: 50%;'>
+                        <div><img src='./img/".$user['prof_path']."' style='width: 45px; border-radius: 45px;'></div>
+                        <div>".$user['fname']." ".$user['lname']."</div>
+                        <div>".$user['uPhone']."</div>
+                        <div>".$user['seat_position']."</div>
+                        <div style='color: #ff710d; font-weight: bold;'>".$user['user_status']."</div>
+                    </div>";
+                }
+            ?>
+        </div>
+    </div>
+  
+<?php   
+    }
+}
+?>
 </body>
 </html>
