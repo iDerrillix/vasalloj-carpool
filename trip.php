@@ -187,7 +187,7 @@
                     $result = mysqli_query($con, $query);
                     $row = mysqli_fetch_assoc($result);
                     $status = $row['status'];
-                    $query = "SELECT trip_passengers.Users_idUsers FROM trip_passengers WHERE Trip_idTrip=$trip_id;";
+                    $query = "SELECT trip_passengers.Users_idUsers FROM trip_passengers WHERE Trip_idTrip=$trip_id AND Users_idUsers = $uID";
                     $result = mysqli_query($con, $query);
                     if(mysqli_num_rows($result) > 0){
                         $booked = true;

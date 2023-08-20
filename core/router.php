@@ -5,7 +5,8 @@
     $routes = [
         '/vasalloj-carpool/' => 'controller/index.php',
         '/vasalloj-carpool/login' => 'controller/login.php',
-        '/vasalloj-carpool/sign-up' => 'controller/sign-up.php'
+        '/vasalloj-carpool/sign-up' => 'controller/sign-up.php',
+        '/vasalloj-carpool/trip' => 'controller/trip.php'
     ];
     if(!isset($_SESSION['uID']) && $uri == '/vasalloj-carpool/'){
         header("Location: /vasalloj-carpool/login?message=loginfirst");

@@ -187,7 +187,7 @@ if($user_type == 'Passenger'){
                                     }
                                 }
                                 echo "
-                                <a href='trip.php?id=".$trip['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
+                                <a href='/vasalloj-carpool/trip?id=".$trip['idTrip']."' style='color: black; text-decoration: none;' class='trip'>
                                 <div class='container' style='min-width: 450px; margin: 0; max-width: fit-content;'>
                                 <div class='flex flex-main-spacebetween' style='width: 100%;'>
                                     <div style='text-align: left;'>
