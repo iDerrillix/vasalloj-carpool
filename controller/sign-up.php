@@ -17,7 +17,7 @@
         $city = $_SESSION['city'];
         $prov = $_SESSION['prov'];
         $email = $_SESSION['email'];
-        $password = $_SESSION['pswd'];
+        $password = password_hash($_SESSION['pswd'], PASSWORD_DEFAULT);
         $utype = 'Passenger';
         
         

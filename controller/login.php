@@ -13,12 +13,15 @@
             $email = $_POST['uEmail'];
             $password = $_POST['uPswd'];
             
-            $user = $database->fetch("SELECT * FROM users WHERE uEmail=? AND uPswd=?", [$email, $password])->fetchAll();
+            $user = $database->fetch("SELECT * FROM users WHERE uEmail=?", [$email])->fetchAll();
             $rowCount = count($user);
-            $_SESSION['uID'] = $user[0]['uID'];
-            $_SESSION['uType'] = $row[0]['uType'];
-            $_SESSION['status'] = $row[0]['user_status'];
-            if($rowCount == 1){
+            if(password_verify($password, $user[0]['uPswd'])){
+                //Authenticated
+                $_SESSION['uID'] = $user[0]['uID'];
+                $_SESSION['uType'] = $row[0]['uType'];
+                $_SESSION['status'] = $row[0]['user_status'];
+
+                //authorize to correct page
                 if($user['uType'] == 'Admin'){
                     echo 'redirect to admin';
                 } else{
@@ -27,25 +30,6 @@
             } else{
                 $errors['wrong'] = 'Wrong email and password';
             }
-            // $query = "SELECT * FROM users WHERE uEmail='$email' AND uPswd='$password'";
-            // $result = mysqli_query($con, $query);
-            // $rowCount = mysqli_num_rows($result);
-            // $row = mysqli_fetch_assoc($result);
-            // $_SESSION['uID'] = $row['uID'];
-            // $_SESSION['uType'] = $row['uType'];
-            // $_SESSION['status'] = $row['user_status'];
-            // if($rowCount == 1){
-            //     if($row['uType'] == 'Admin'){
-            //         header("Location: ./admintest/adminPanel.php");
-            //         exit;
-            //     } else {
-            //         header("Location: index.php");
-            //         exit;
-            //     }
-            // } else {
-            //     header("Location: login.php?error=true");
-            //     exit;
-            // }
         }
     }
     require 'view/login.view.php';
