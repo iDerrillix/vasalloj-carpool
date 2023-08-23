@@ -22,7 +22,7 @@
                 <a href="tickets.php"><i class="fa-solid fa-wallet"></i> Tickets</a>
             </li>
             <li>
-                <a href="car.php"><i class="fa-solid fa-car"></i> Cars</a>
+                <a href="/vasalloj-carpool/car"><i class="fa-solid fa-car"></i> Cars</a>
             </li>
             
             <li>

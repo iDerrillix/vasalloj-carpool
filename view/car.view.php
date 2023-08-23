@@ -10,32 +10,16 @@
 </head>
 <body>
     <?php
-    if(isset($_GET['success'])){
+    if(isset($response['success'])){
         echo "<script>hideLayer(2);</script>";
     }
-        require 'dbcon.php';
-        
-        include 'header.php';
-        
     ?>
-    <div>a</div>
     <div class="container" style="width: 50%; margin: 0 auto; margin-top: 100px;">
-        <form action="./script/car-register.php" method="POST" id="form">
-            <?php 
-                
-                if(!isset($_SESSION['uID'])){
-                    header("Location: login.php?message=loginfirst");
-                    exit;
-                }
-                $id = $_SESSION['uID'];
-                $query = "SELECT lic_no FROM users WHERE uID=$id";
-                $result = mysqli_query($con, $query);
-                $row = mysqli_fetch_assoc($result);
-            ?>
+        <form method="POST" id="form">
             <div id="license" style="text-align: center;">
                 <p class="heading second-text"><b>Enter Your License Number</b></p>
                 <br>
-                <input type="text" name="lic_no" id="lic_no" placeholder="License No." value="<?php echo $row['lic_no'];?>" required="true" class="text-box" pattern="[A-Z][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]" title="11 Digit License No. [A00-00-000000]">
+                <input type="text" name="lic_no" id="lic_no" placeholder="License No." value="<?php echo $lic_no['lic_no'];?>" required="true" class="text-box" pattern="[A-Z][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]" title="11 Digit License No. [A00-00-000000]">
                 <input type="button" value="Next" id="license-next" class="button" onclick="hideLayer(1);"> 
             </div>
             <div id="details" style="text-align: center; display: none;">
@@ -63,21 +47,19 @@
         <p class="heading second-text"><b>Registered Cars</b></p>
         <table class="simple-table" style="width: 100%;">
                 <?php
-                    $query = "SELECT * FROM car WHERE Users_idUsers='$id'";
-                    $result = mysqli_query($con, $query);
-                    while($row = mysqli_fetch_assoc($result)){
-                        if($row['approved'] == 0){
+                    foreach($cars as $car){
+                        if($car['approved'] == 0){
                             $approve = "Not Registered";
                         } else {
                             $approve = "Registered";
                         }
                         echo "<tr>
-                        <td>".$row['idCar']."</td>
-                        <td>".$row['plate_no']."</td>
-                        <td>".$row['car_make']."</td>
-                        <td>".$row['model']."</td>
-                        <td>".$row['type']."</td>
-                        <td>".$row['capacity']."</td>
+                        <td>".$car['idCar']."</td>
+                        <td>".$car['plate_no']."</td>
+                        <td>".$car['car_make']."</td>
+                        <td>".$car['model']."</td>
+                        <td>".$car['type']."</td>
+                        <td>".$car['capacity']."</td>
                         <td>".$approve."</td>
                         </tr>";
                     }
@@ -117,7 +99,6 @@
         document.querySelector("#details-next").addEventListener("click", function(e){
             e.preventDefault();
             hideLayer(2);
-            document.querySelector("#form").submit();
         }, false);
     </script>
 </body>
