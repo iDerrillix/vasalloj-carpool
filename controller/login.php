@@ -18,8 +18,8 @@
             if(password_verify($password, $user[0]['uPswd'])){
                 //Authenticated
                 $_SESSION['uID'] = $user[0]['uID'];
-                $_SESSION['uType'] = $row[0]['uType'];
-                $_SESSION['status'] = $row[0]['user_status'];
+                $_SESSION['uType'] = $user[0]['uType'];
+                $_SESSION['status'] = $user[0]['user_status'];
 
                 //authorize to correct page
                 if($user['uType'] == 'Admin'){

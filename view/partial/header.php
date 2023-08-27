@@ -16,7 +16,7 @@
                 <a href="/vasalloj-carpool/"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
-                <a href="profile.php"><i class="fa-solid fa-id-card"></i> Profile</a>
+                <a href="/vasalloj-carpool/profile"><i class="fa-solid fa-id-card"></i> Profile</a>
             </li>
             <li>
                 <a href="tickets.php"><i class="fa-solid fa-wallet"></i> Tickets</a>

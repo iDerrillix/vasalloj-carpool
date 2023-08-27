@@ -7,7 +7,8 @@
         '/vasalloj-carpool/login' => 'controller/login.php',
         '/vasalloj-carpool/sign-up' => 'controller/sign-up.php',
         '/vasalloj-carpool/trip' => 'controller/trip.php',
-        '/vasalloj-carpool/car' => 'controller/car.php'
+        '/vasalloj-carpool/car' => 'controller/car.php',
+        '/vasalloj-carpool/profile' => 'controller/profile.php'
     ];
     if(!isset($_SESSION['uID']) && $uri == '/vasalloj-carpool/'){
         header("Location: /vasalloj-carpool/login?message=loginfirst");
