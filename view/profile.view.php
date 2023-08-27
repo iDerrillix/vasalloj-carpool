@@ -99,7 +99,7 @@
                         }
                     }
                     echo "
-                    <a href='trip-history.php?id=".$trip['idTrip']."' style='text-decoration: none; display: block;' class='past-trips'>
+                    <a href='/vasalloj-carpool/past-trip?id=".$trip['idTrip']."' style='text-decoration: none; display: block;' class='past-trips'>
                     <div class='container flex flex-main-spacebetween' style='min-width: 100%; margin: 10px 0; text-align:left;'>
                         <div>
                             <h3 style='color: #ff710d;'>".date("D d M", strtotime($trip['departure_date']))."</h3>
@@ -128,7 +128,7 @@
         <?php
             foreach($driverTrips as $trip){
                 echo "
-                    <a href='trip-history.php?id=".$trip['idTrip']."' style='text-decoration: none; display: block;' class='past-trips'>
+                    <a href='/vasalloj-carpool/past-trip?id=".$trip['idTrip']."' style='text-decoration: none; display: block;' class='past-trips'>
                     <div class='container flex flex-main-spacebetween' style='min-width: 100%; margin: 10px 0; text-align:left;'>
                         <div>
                             <h3 style='color: #ff710d;'>".date("D d M", strtotime($trip['departure_date']))."</h3>
