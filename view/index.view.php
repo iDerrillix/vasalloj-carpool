@@ -402,17 +402,31 @@ if($user_type == 'Passenger'){
                         </div>
                     </div>
                     <hr>
+                    <form method="POST">
                     <?php 
-                        if($ongoingTrip['status'] == 'Scheduled'){
-                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=wait' class='input-btn'>In Pick-up Location</a>";
-                        }else if($ongoingTrip['status'] == 'Waiting'){
-                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=start' class='input-btn'>Start</a>";
-                        } else{
-                            echo "<a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=finish' class='input-btn'>Finish</a>";
-                        }
-                        echo " <a href='driver-trip.php?id=".$ongoingTrip['idTrip']."&status=cancel' class='input-btn'>Cancel</a>";
+                        if($ongoingTrip['status'] == 'Scheduled'){ ?>
+                            <input type="hidden" name="id" value="<?= $ongoingTrip['idTrip'] ?>">
+                            <input type="hidden" name="status" value="wait">
+                            <input type="submit" value="In Pick-up Location" name="in_location" class="input-btn">
+                            <?php
+                        }else if($ongoingTrip['status'] == 'Waiting'){ ?>
+                            <input type="hidden" name="id" value="<?= $ongoingTrip['idTrip'] ?>">
+                            <input type="hidden" name="status" value="start">
+                            <input type="submit" value="Start" name="start" class="input-btn">
+                            <?php
+                        } else{ ?>
+                            <input type="hidden" name="id" value="<?= $ongoingTrip['idTrip'] ?>">
+                            <input type="hidden" name="status" value="finish">
+                            <input type="submit" value="Finish" name="finish" class="input-btn">
+                            <?php
+                        } 
                     ?>
-                    
+                    </form>
+                    <form action="" method="post">
+                        <input type="hidden" name="id" value="<?= $ongoingTrip['idTrip'] ?>">
+                        <input type="hidden" name="status" value="cancel">
+                        <input type="submit" value="Cancel" name="cancel" class="input-btn">
+                    </form>
                 </div>
                 <div class="container" style="width: 49%; text-align: left; margin: 0;" id='booking-container'>
                     <p>Booking</p>
