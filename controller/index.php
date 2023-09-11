@@ -162,5 +162,9 @@
     
     
     include 'view/partial/header.php';
-    require('view/index.view.php');
+    if($user_type == 'Passenger'){
+        require('view/passenger.view.php');
+    } else if($user_type == 'Driver'){
+        require('view/driver.view.php');
+    }
 ?>
